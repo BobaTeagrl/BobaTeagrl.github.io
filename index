@@ -25,7 +25,7 @@
             <tr>
                 <td>Placeholder</td>
                 <td onclick="location.href='projects.html'"><img src="./Images/projects.png"  style="width: 190px;height: 190px;"></td>
-                <td><img src="underwork.png" style="width: 190px; height: 190px;"></td>
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
 
             </tr>
             <!-- row three -->
