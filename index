@@ -1,0 +1,63 @@
+<!Doctype HTML>
+  <html>
+    <head>
+        <title>Bobateagrl.xyz</title>
+        <link rel="icon" href="./Images/tab.png" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+    </head>
+    <body>
+
+
+        <table  class="table" >   
+
+            
+
+
+            <!-- row one -->
+            <tr>
+                <td>About Me</td>
+                <td onclick="location.href='aboutme.html'"><img src="./Images/aboutme.png"  style="width: 190px;height: 190px;"></td>
+                <td>Placeholder</td>
+
+            </tr>
+            <!-- row two -->
+            <tr>
+                <td>Placeholder</td>
+                <td onclick="location.href='projects.html'"><img src="./Images/projects.png"  style="width: 190px;height: 190px;"></td>
+                <td><img src="underwork.png" style="width: 190px; height: 190px;"></td>
+
+            </tr>
+            <!-- row three -->
+            <tr>
+                <td>Placeholder</td>
+                <td>Placeholder</td>
+                <td>Placeholder</td>
+
+            </tr>
+
+
+
+
+        </table>
+
+        <p class="positioned">made by the wonderful Bobateagrl :3</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </body>
+
+
+  </html>
