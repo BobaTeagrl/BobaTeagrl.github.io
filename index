@@ -16,23 +16,29 @@
 
             <!-- row one -->
             <tr>
-                <td>About Me</td>
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
                 <td onclick="location.href='aboutme.html'"><img src="./Images/aboutme.png"  style="width: 190px;height: 190px;"></td>
-                <td>Placeholder</td>
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
 
             </tr>
             <!-- row two -->
             <tr>
-                <td>Placeholder</td>
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
                 <td onclick="location.href='projects.html'"><img src="./Images/projects.png"  style="width: 190px;height: 190px;"></td>
                 <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
 
             </tr>
             <!-- row three -->
             <tr>
-                <td>Placeholder</td>
-                <td>Placeholder</td>
-                <td>Placeholder</td>
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
+                <td><img src="./Images/underwork.png" style="width: 190px; height: 190px;"></td>
+
 
             </tr>
 
