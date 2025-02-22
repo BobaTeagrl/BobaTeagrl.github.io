@@ -1,7 +1,7 @@
 body {
     background: rgb(22, 22, 22)  center center repeat;
     margin: 0;
-    padding: 0;
+    padding: -110;
     color: antiquewhite;
   }
   #wrap {
@@ -9,6 +9,49 @@ body {
     margin: auto;
     background: rgb(37, 37,37) ;
     overflow: hidden;
-    padding: 150px;
+    padding: 50px;
     
   }
+  .chibi {
+   
+    position: relative;
+    top: -600px;
+    right: -30px;
+    rotate: 25deg;
+  }
+  
+  .inu {
+
+    position:relative;
+    top: -500px;
+    right: -1450px;
+    rotate: -5deg;
+  }
+
+.headpats {
+ 
+  position: relative;
+  top: -950px;
+  right: 300px;
+  rotate: -10deg;
+}
+.positioned {
+    position:relative;
+    background: rgba(153, 0, 255, 0.445);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.fangs {
+    position: relative;
+    top: -900px;
+    right: -1100px;
+    rotate: 14deg;
+}
+
+.rave {
+    position: relative;
+    top: -300px;
+    right: 550px;
+
+}
