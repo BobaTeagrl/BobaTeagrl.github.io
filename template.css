@@ -1,57 +1,108 @@
+/* Body styles */
 body {
-    background: rgb(22, 22, 22)  center center repeat;
+    background: rgb(22, 22, 22) center center repeat;
     margin: 0;
-    padding: -110;
+    padding: 0;
     color: antiquewhite;
-  }
-  #wrap {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body takes up at least the full viewport height */
+}
+
+/* Wrap styles for the main container */
+#wrap {
     width: 70%;
     margin: auto;
-    background: rgb(37, 37,37) ;
+    background: rgb(37, 37, 37);
     overflow: hidden;
     padding: 50px;
-    
-  }
-  .chibi {
-   
-    position: relative;
-    top: -600px;
-    right: -30px;
-    rotate: 25deg;
-  }
-  
-  .inu {
+    position: relative; /* For positioning images inside it */
+    flex-grow: 1; /* Allow the container to stretch vertically */
+}
 
-    position:relative;
-    top: -500px;
-    right: -1450px;
-    rotate: -5deg;
-  }
+/* Image styles - making them flexible and responsive */
+img {
+    max-width: 100%; /* Ensures images scale down on mobile */
+    height: auto;
+    position: absolute; /* Allows for scattered positioning */
+}
+
+.chibi {
+    top: 100px;
+    right: 1700px;
+    transform: rotate(25deg);
+}
+
+.inu {
+    top: 300px;
+    right: 20px;
+    transform: rotate(-9deg);
+}
 
 .headpats {
- 
-  position: relative;
-  top: -950px;
-  right: 300px;
-  rotate: -10deg;
+    top: 590px;
+  right: 1700px;
+    transform: rotate(-10deg);
 }
-.positioned {
-    position:relative;
-    background: rgba(153, 0, 255, 0.445);
-    display:flex;
-    align-items: center;
-    justify-content: center;
-}
+
 .fangs {
-    position: relative;
-    top: -900px;
-    right: -1100px;
-    rotate: 14deg;
+    top: 100px;
+    right: 00px;
+    transform: rotate(14deg);
 }
 
 .rave {
-    position: relative;
-    top: -300px;
-    right: 550px;
+    top: 300px;
+    right: 1600px;
+}
+.boo {
+    top: 750px;
+    right: 10px;
+    transform: rotate(-15deg);
+}
 
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 10px;
+    background: rgb(37, 37, 37);
+    margin-top: auto;
+}
+
+.positioned {
+    position: relative;
+    background: rgba(153, 0, 255, 0.445);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* Media query for smaller screens (Mobile) */
+@media screen and (max-width: 768px) {
+    #wrap {
+        width: 90%; /* Makes wrap container take up more space */
+        padding: 20px;
+    }
+
+    /* Image Adjustments for Mobile */
+    .chibi, .inu, .headpats, .fangs, .rave, .boo {
+    display: none;   
+    
+    }
+
+    /* Font size adjustments */
+    h1 {
+        font-size: 1.8rem; 
+    }
+
+    p {
+        font-size: 1rem; 
+        line-height: 1.6;
+    }
+
+    /* Footer text size adjustments */
+    .positioned {
+        font-size: 0.9rem;
+    }
 }
