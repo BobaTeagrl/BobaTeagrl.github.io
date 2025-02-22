@@ -1,0 +1,14 @@
+body {
+    background: rgb(22, 22, 22)  center center repeat;
+    margin: 0;
+    padding: 0;
+    color: antiquewhite;
+  }
+  #wrap {
+    width: 70%;
+    margin: auto;
+    background: rgb(37, 37,37) ;
+    overflow: hidden;
+    padding: 150px;
+    
+  }
