@@ -1,0 +1,84 @@
+body {
+    background-color: rgb(37, 37, 37);
+    margin: 0;
+    padding: 0;
+}
+
+/* Make table responsive */
+.table {
+    margin-top: 50px;
+    width: 90%; /* Adjust width to fit smaller screens */
+    max-width: 600px; /* Prevent too large on wider screens */
+    margin-left: auto;
+    margin-right: auto;
+    background: rgb(37, 37, 37);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Adjust table cells */
+th, td {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    width: 100%; /* Allow flexibility */
+    max-width: 200px;
+    text-align: center;
+}
+
+/* Make images responsive */
+td img {
+    width: 100%;
+    max-width: 190px; /* Ensure it scales within max limit */
+    height: auto;
+}
+
+/* Improve clickability */
+td {
+    cursor: pointer;
+}
+
+/* Center footer text */
+.positioned {
+    position: relative;
+    background: rgba(153, 0, 255, 0.445);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+/* Apply only on larger screens 
+@media (min-width: 768px) { 
+    .table {
+        transform: scale(1.2); 
+    }
+}
+    */
+
+
+
+
+
+
+
+
+/* for mobile */
+@media (max-width: 768px) {
+    .table {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    tr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    th, td {
+        width: auto;
+        max-width: 100%;
+    }
+}

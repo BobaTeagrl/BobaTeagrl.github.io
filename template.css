@@ -35,7 +35,7 @@ img {
 
 .inu {
     top: 300px;
-    right: 20px;
+    right: -10px;
     transform: rotate(-9deg);
 }
 
@@ -53,7 +53,7 @@ img {
 
 .rave {
     top: 300px;
-    right: 1600px;
+    right: 1650px;
 }
 .boo {
     top: 750px;
