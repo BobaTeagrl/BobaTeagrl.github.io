@@ -16,15 +16,15 @@ body {
     background: rgb(37, 37, 37);
     overflow: hidden;
     padding: 50px;
-    position: relative; /* For positioning images inside it */
-    flex-grow: 1; /* Allow the container to stretch vertically */
+    position: relative;
+    flex-grow: 1;
 }
 
-/* Image styles - making them flexible and responsive */
+
 img {
-    max-width: 100%; /* Ensures images scale down on mobile */
+    max-width: 100%; 
     height: auto;
-    position: absolute; /* Allows for scattered positioning */
+    position: absolute;
 }
 
 .chibi {

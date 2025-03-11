@@ -17,37 +17,29 @@ body {
     align-items: center;
 }
 
-/* Adjust table cells */
+
 th, td {
     padding: 10px;
     border: 1px solid black;
     border-radius: 15px;
-    width: 100%; /* Allow flexibility */
+    width: 100%; 
     max-width: 200px;
     text-align: center;
 }
 
-/* Make images responsive */
+
 td img {
     width: 100%;
-    max-width: 190px; /* Ensure it scales within max limit */
+    max-width: 190px; 
     height: auto;
 }
 
-/* Improve clickability */
+
 td {
     cursor: pointer;
 }
 
-/* Center footer text */
-.positioned {
-    position: relative;
-    background: rgba(153, 0, 255, 0.445);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
+
 /* Apply only on larger screens 
 @media (min-width: 768px) { 
     .table {
@@ -61,9 +53,7 @@ td {
 
 
 
-
-
-/* for mobile */
+/* for mobile i hate this but it works please dont fuck with again */
 @media (max-width: 768px) {
     .table {
         display: flex;
