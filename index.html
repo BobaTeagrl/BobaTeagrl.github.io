@@ -58,7 +58,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
-<script>
+<!-- <script>
 
 
     // CONSTANTS
@@ -72,6 +72,7 @@
     const AMT_FADE_PER_FRAME = 5;
     
     // VARIABLES
+    let useImages = false;
     let colorWithAlpha;
     let numRows;
     let numCols;
@@ -79,6 +80,12 @@
     let currentCol = -2;
     let allNeighbors = [];
     let img;
+
+    function preload() {
+
+        img = loadImage("boo.png")
+    }
+
     function setup() {
       let cnv = createCanvas(windowWidth, windowHeight);
       cnv.style("position", "fixed");
@@ -122,6 +129,13 @@
         let neighborY = neighbor.row * CELL_SIZE;
         // Update the opacity of the neighbor
         neighbor.opacity = max(0, neighbor.opacity - AMT_FADE_PER_FRAME); // Decrease opacity
+
+        if (useImages) {
++               // Draw image instead of a square
++               tint(255, neighbor.opacity);
++               image(img, x, y, CELL_SIZE, CELL_SIZE);
++           } else {
+
         stroke(COLOR_R, COLOR_G, COLOR_B, neighbor.opacity);
         rect(neighborX, neighborY, CELL_SIZE, CELL_SIZE);
         
@@ -172,10 +186,108 @@
       numCols = Math.ceil(windowWidth / CELL_SIZE); 
       background(BACKGROUND_COLOR); 
     }
-    </script>
-
+    </script> -->
+    <script>
+      let CELL_SIZE = 15; // Size of each square
+      const BACKGROUND_COLOR = '#252525';
+      
+      let useImages = false; 
+      let numRows, numCols;
+      let currentRow = -2, currentCol = -2;
+      let allNeighbors = [];
+      let img; 
+  
+       function preload() {
+     img = loadImage("./Images/dic.png",
+          () => console.log("Image loaded successfully!"),  // Success callback
+         () => console.error("Error: Image failed to load!") // Error callback
+     );
+  }
+  
+      function setup() {
+          let cnv = createCanvas(windowWidth, windowHeight);
+          cnv.style("position", "fixed");
+          cnv.style("inset", 0);
+          cnv.style("z-index", -1);
+          background(BACKGROUND_COLOR);
+          noFill();
+          numRows = Math.ceil(windowHeight / CELL_SIZE);
+          numCols = Math.ceil(windowWidth / CELL_SIZE);
+      }
+  
+      function draw() {
+          background(BACKGROUND_COLOR);
+          
+          let row = floor(mouseY / CELL_SIZE);
+          let col = floor(mouseX / CELL_SIZE);
+          
+          if (row !== currentRow || col !== currentCol) {
+              currentRow = row;
+              currentCol = col;
+              allNeighbors.push(...getRandomNeighbors(row, col));
+          }
+  
+          for (let neighbor of allNeighbors) {
+              let x = neighbor.col * CELL_SIZE;
+              let y = neighbor.row * CELL_SIZE;
+              neighbor.opacity = max(0, neighbor.opacity - 5);
+  
+              if (useImages) {
+                  // Draw image instead of a square
+                  tint(255, neighbor.opacity);
+                  image(img, x, y, CELL_SIZE, CELL_SIZE);
+              } else {
+                  // Draw regular outlined squares
+                  stroke(150, 9, 136, neighbor.opacity);
+                  rect(x, y, CELL_SIZE, CELL_SIZE);
+              }
+          }
+  
+          allNeighbors = allNeighbors.filter(neighbor => neighbor.opacity > 0);
+      }
+  
+      function getRandomNeighbors(row, col) {
+          let neighbors = [];
+          for (let dRow = -1; dRow <= 1; dRow++) {
+              for (let dCol = -1; dCol <= 1; dCol++) {
+                  let neighborRow = row + dRow;
+                  let neighborCol = col + dCol;
+                  if ((dRow !== 0 || dCol !== 0) && neighborRow >= 0 && neighborRow < numRows && neighborCol >= 0 && neighborCol < numCols) {
+                      neighbors.push({ row: neighborRow, col: neighborCol, opacity: 255 });
+                  }
+              }
+          }
+          return neighbors;
+      }
+  
+      function windowResized() {
+          resizeCanvas(windowWidth, windowHeight);
+          numRows = Math.ceil(windowHeight / CELL_SIZE);
+          numCols = Math.ceil(windowWidth / CELL_SIZE);
+          background(BACKGROUND_COLOR);
+      }
+  
+      // Cheat code to toggle effect
+      const cheatCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; 
+      let userInput = [];
+  
+      document.addEventListener("keydown", function(event) {
+        console.log("Key Pressed:", event.keyCode);
+          userInput.push(event.keyCode);
+          if (userInput.length > cheatCode.length) userInput.shift()
+          console.log("Current Input:", userInput);
+  
+          if (JSON.stringify(userInput) === JSON.stringify(cheatCode)) {
+              useImages = !useImages; // Toggle effect
+              CELL_SIZE = 22
+              console.log("Cheat activated! Toggled effect.");
+          }
+      });
+  </script>
+  
     
     </body>
 
+    
 
   </html>
