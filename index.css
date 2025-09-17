@@ -1,74 +1,166 @@
-body {
-    background-color: rgb(37, 37, 37);
-    margin: 0;
-    padding: 0;
-}
 
-/* Make table responsive */
-.table {
-    margin-top: 50px;
-    width: 90%; /* Adjust width to fit smaller screens */
-    max-width: 600px; /* Prevent too large on wider screens */
-    margin-left: auto;
-    margin-right: auto;
-    background: rgb(37, 37, 37);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-th, td {
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 15px;
-    width: 100%; 
-    max-width: 200px;
+.main-container {
+    position: relative;
+    z-index: 10;
+    padding: 2rem;
     text-align: center;
+} 
+
+.site-title {
+    margin-bottom: 3rem;
 }
 
-
-td img {
-    width: 100%;
-    max-width: 190px; 
-    height: auto;
+.site-title h1 {
+    color: #92cc41;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 0px #000;
 }
 
+.site-subtitle {
+    color: #ffc107;
+    font-size: 12px;
+    margin-bottom: 2rem;
+}
 
-td {
+/* Navigation Grid */
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(146, 204, 65, 0.3);
+}
+
+.nav-item.clickable:hover {
     cursor: pointer;
 }
 
+.nav-item img {
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    image-rendering: pixelated; /* Keep that crispy pixel look */
+}
 
-/* Apply only on larger screens 
-@media (min-width: 768px) { 
-    .table {
-        transform: scale(1.2); 
+
+/* Interactive background canvas */
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none; /* Let clicks pass through to content */
+}
+
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .main-container {
+        padding: 1rem;
+    }
+
+    .site-title h1 {
+        font-size: 18px;
+    }
+
+    .nav-item img {
+        max-width: 120px;
     }
 }
-    */
 
-
-
-
-
-
-/* for mobile i hate this but it works please dont fuck with again */
-@media (max-width: 768px) {
-    .table {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+@media screen and (max-width: 480px) {
+    .nav-grid {
+        grid-template-columns: 1fr;
+        max-width: 200px;
     }
 
-    tr {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    th, td {
-        width: auto;
-        max-width: 100%;
+    .nav-item img {
+        max-width: 160px;
     }
 }
+
+/* Loading animation for images */
+.nav-item img {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Hover effects for links */
+.nav-item a {
+    display: block;
+    text-decoration: none;
+}
+.sticker {
+    position: fixed; 
+    pointer-events: none; 
+    
+    transition: opacity 0.4s ease; 
+  }
+
+  .chibi {
+    top: 15vh;
+    left: 5vw;
+    width: 75px;
+    height: 75px;
+    transform: rotate(25deg);
+  }
+
+  .inu {
+    top: 38vh;
+    right: 2vw;
+    width: 200px;
+    height: auto;
+    transform: rotate(9deg);
+  }
+
+  .headpats {
+    bottom: 10vh;
+    left: 3vw;
+    width: 125px;
+    height: 125px;
+    transform: rotate(-10deg);
+  }
+
+  .fangs {
+    top: 15vh;
+    right: 15vw;
+    width: 125px;
+    height: 125px;
+    transform: rotate(-14deg);
+  }
+
+  .rave {
+    top: 45vh;
+    left: 8vw;
+    width: 125px;
+    height: 125px;
+    transform: rotate(4deg);
+  }
+
+  .boo {
+    bottom: 10vh;
+    right: 18vw;
+    width: 80px;
+    height: 80px;
+    transform: rotate(-15deg);
+  }
