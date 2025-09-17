@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - BobaTeagrl.xyz</title>
+  <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+
+  <style>
+    body { 
+      background-color: #1a1d20; 
+      padding: 2rem; 
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden; 
+    }
+    
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 11; 
+    }
+
+    .sticker {
+      position: fixed; 
+      pointer-events: none; 
+      z-index: 0; 
+      transition: opacity 0.4s ease; 
+    }
+
+    .chibi {
+      top: 15vh;
+      left: 5vw;
+      width: 75px;
+      height: 75px;
+      transform: rotate(25deg);
+    }
+
+    .inu {
+      top: 35vh;
+      right: 2vw;
+      width: 200px;
+      height: auto;
+      transform: rotate(-9deg);
+    }
+
+    .headpats {
+      bottom: 25vh;
+      left: 3vw;
+      width: 125px;
+      height: 125px;
+      transform: rotate(-10deg);
+    }
+
+    .fangs {
+      top: 15vh;
+      right: 15vw;
+      width: 125px;
+      height: 125px;
+      transform: rotate(14deg);
+    }
+
+    .rave {
+      top: 45vh;
+      left: 8vw;
+      width: 125px;
+      height: 125px;
+    }
+
+    .boo {
+      bottom: 10vh;
+      right: 5vw;
+      width: 80px;
+      height: 80px;
+      transform: rotate(-15deg);
+    }
+
+    /* NES.css custom adjustments */
+    .nes-container.project-card {
+      margin-bottom: 2rem;
+      background-color: #212529;
+    }
+
+    .nes-text.site-title {
+      text-decoration: none;
+      color: #92cc41;
+    }
+
+    .nes-text.site-title:hover {
+      color: #a6d956;
+    }
+
+    /* Responsive sticker management */
+    @media screen and (max-width: 1400px) {
+      .chibi, .headpats, .rave {
+        opacity: 0.7;
+      }
+    }
+
+    @media screen and (max-width: 1200px) {
+      .chibi, .headpats, .rave {
+        display: none;
+      }
+      .inu {
+        width: 150px;
+        right: -20px;
+      }
+      .fangs {
+        right: 10vw;
+      }
+    }
+
+    @media screen and (max-width: 1224px) {
+      .fangs {
+        opacity: 0.6;
+        width: 100px;
+        height: 100px;
+      }
+      .inu {
+        opacity: 0.8;
+        width: 120px;
+      }
+    }
+
+    @media screen and (max-width: 1200px) {
+      .sticker {
+        display: none !important;
+      }
+    }
+
+    /* Very short screens */
+    @media screen and (max-height: 600px) {
+      .headpats, .boo {
+        display: none;
+      }
+    }
+
+    @media screen and (max-height: 500px) {
+      .sticker {
+        display: none !important;
+      }
+    }
+
+    /* Ultra-wide adjustments */
+    @media screen and (min-width: 1920px) {
+      .chibi {
+        left: 8vw;
+      }
+      .headpats {
+        left: 6vw;
+      }
+      .rave {
+        left: 12vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticker Images -->
+  <img src="./Images/chibi.png" class="sticker chibi" alt="chibi sticker">
+  <img src="./Images/SkeleyInu.png" class="sticker inu" alt="skeley inu sticker">
+  <img src="./Images/headpatSkeley.png" class="sticker headpats" alt="headpat sticker">
+  <img src="./Images/SkeleySharps.png" class="sticker fangs" alt="fangs sticker">
+  <img src="./Images/skeleyRave.png" class="sticker rave" alt="rave sticker">
+  <img src="./Images/boo.png" class="sticker boo" alt="boo sticker">
+
+  <div class="main-content">
+    
+    <section class="topic">
+      <h1 class="nes-text is-warning">
+        <a href="./index.html" class="nes-text site-title">#BobaTeagrl.xyz</a>
+      </h1>
+      <h2 style="color: #ff07ea;">Projects</h2>
+      <p class="nes-text is-primary">
+        i've worked on a lot of things but this will showcase real active projects as well as act as a graveyard for things that will never see the light of day again<br>
+        this is not a full list just the biggest ones
+      </p>
+    </section>
+
+    <!-- Active Projects Section -->
+    <section class="nes-container with-title is-dark">
+      <h3 class="title" style="color: #f31182;">Active Projects</h3>
+      
+      <div class="nes-container project-card">
+        <h4 class="nes-text is-primary"><a href="bobateagrl.xyz">This Website</a></h4>
+        <p>this website has had 2 overhauls already! i think its a good showing of how i have gotten better at code and am better able to use it to express myself! who knows what this will all be like in the future but i hope you will come back to see! </p>
+      </div>
+
+      <div class="nes-container project-card">
+        <h4 class="nes-text is-warning">
+          <a href="https://github.com/BobaTeagrl/garfbounce" class="nes-text" style="color: #07ffc1;">Garfbounce</a>
+        </h4>
+        <p>so i wanted to write something in python for a small project (i was bored) so i made a little program where a jpeg of Garfield bounces around like a dvd logo and if he runs into a lasagna he gets bigger and faster. There are issues like no size limit so it pretty quickly gets so big and fast it crashes but i think the scuff is what makes it funny! i made it in a little under 2 hours with python and pygame and have it hosted on github if you wanna look at it for some reason</p>
+      </div>
+
+      <div class="nes-container project-card">
+        <h4 class="nes-text is-warning">
+          <a href="https://github.com/BobaTeagrl/file-sorter" class="nes-text" style="color: #d607ff;">file-sorter</a>
+        </h4>
+        <p>After needing to go through an old pc backup of mine I made this program to sort out chosen file types from large folders. I wanted this to be light and run anywhere while being so simple anyone could run it and (i like to think) i did all that pretty well. im sure im going to end up using this tool for myself pretty often and i hope others can too :3</p>
+      </div>
+    </section>
+
+    <!-- Dead Projects Section -->
+    <section class="nes-container with-title is-dark" style="margin-top: 2rem;">
+      <h3 class="title" style="color: #dc3545;">Dead Projects</h3>
+      
+      <div class="nes-container project-card">
+        <h4 class="nes-text" style="color: #6c757d;">My last friend</h4>
+        <p>My last friend was a visual novel I was working on. out of all my projects this is the one the most people knew about. An alpha build was released to (at least one person i didnt know liking it) a few eyes while I improved my code, writing and people even sent voice lines. The project was put on hold due to life and later scrapped because I wasn't happy with how good it was when I came back to it.</p>
+        <p class="nes-text is-success"><strong>Thanks to everyone who helped with this project</strong></p>
+      </div>
+
+      <div class="nes-container project-card">
+        <h4 class="nes-text" style="color: #6c757d;">The Dingus Den</h4>
+        <p>The dingus den was a weird meta tribute game to a close friend/content creator "virellis" and while its project files are long gone i will forever be thankful for the distraction, the things i learned and the people who told me to keep going when i couldnt</p>
+        <p class="nes-text is-success"><strong>thanks.</strong></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
+    <div class="nes-balloon from-left">
+      <p>made by the wonderful Bobateagrl :3</p>
+    </div>
+  </footer>
+</body>
+</html>
