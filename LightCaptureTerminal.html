@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Light Capture Terminal - Bobateagrl.xyz</title>
+    <link rel="icon" href="./Images/tab.png" type="image/x-icon">
+    
+    <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+          background-color: #0a0a0a; 
+          padding: 1rem; 
+          position: relative;
+          min-height: 100vh;
+          overflow-x: hidden;
+          font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .main-content {
+          max-width: 1000px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 11; 
+        }
+
+        .terminal-header {
+          background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+          border: 2px solid #c300ff;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+          position: relative;
+        }
+
+        .terminal-header::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 65, 0.03) 2px,
+            rgba(0, 255, 65, 0.03) 4px
+          );
+          pointer-events: none;
+          border-radius: 6px;
+        }
+
+        .terminal-prompt {
+          color: #f700ff;
+          font-size: 0.9rem;
+          line-height: 1.4;
+          text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        }
+
+        .cursor {
+          display: inline-block;
+          background-color: #f700ff;
+          animation: blink 1s infinite;
+          width: 8px;
+          height: 1rem;
+          margin-left: 2px;
+        }
+
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+
+        .photo-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          margin-top: 2rem;
+        }
+
+        .photo-terminal {
+          background: #111;
+          border: 1px solid #333;
+          border-radius: 4px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          position: relative;
+        }
+
+        .photo-terminal:hover {
+          border-color: #e100ff;
+          box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+          transform: translateY(-2px);
+        }
+
+        .photo-header {
+          background: #1a1a1a;
+          padding: 0.5rem 1rem;
+          border-bottom: 1px solid #333;
+          font-size: 0.7rem;
+          color: #f700ff;
+        }
+
+        .photo-content {
+          position: relative;
+          height: 250px;
+          background: #000;
+          overflow: hidden;
+          cursor: pointer;
+        }
+
+        .photo-placeholder {
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                      linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                      linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+          background-size: 20px 20px;
+          background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #666;
+          font-size: 0.8rem;
+          transition: all 0.3s ease;
+        }
+
+        .photo-placeholder:hover {
+          background-color: rgba(0, 255, 65, 0.05);
+          color: #f700ff;
+        }
+
+        .photo-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .photo-image.loaded {
+          opacity: 1;
+        }
+
+        .loading-text {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: #f700ff;
+          font-size: 0.7rem;
+          text-align: center;
+          z-index: 10;
+          text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        }
+
+        .decryption-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            repeating-linear-gradient(
+              90deg,
+              transparent,
+              transparent 2px,
+              rgba(0, 255, 65, 0.1) 2px,
+              rgba(0, 255, 65, 0.1) 4px
+            ),
+            repeating-linear-gradient(
+              0deg,
+              transparent,
+              transparent 2px,
+              rgba(0, 255, 65, 0.1) 2px,
+              rgba(0, 255, 65, 0.1) 4px
+            );
+          animation: decrypt 2s ease-out forwards;
+          z-index: 5;
+        }
+
+        @keyframes decrypt {
+          0% { 
+            opacity: 1; 
+            background-size: 4px 4px, 4px 4px;
+          }
+          50% { 
+            opacity: 0.7; 
+            background-size: 8px 8px, 8px 8px;
+          }
+          100% { 
+            opacity: 0; 
+            background-size: 20px 20px, 20px 20px;
+          }
+        }
+
+        .scan-lines {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 65, 0.05) 2px,
+            rgba(0, 255, 65, 0.05) 4px
+          );
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .photo-terminal:hover .scan-lines {
+          opacity: 1;
+        }
+
+        .photo-info {
+          background: #0a0a0a;
+          padding: 1rem;
+          font-size: 0.65rem;
+          line-height: 1.4;
+          color: #888;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .info-line {
+          margin: 0.2rem 0;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .info-label {
+          color: #f700ff;
+        }
+
+        .info-value {
+          color: #fff;
+        }
+
+        .site-title-terminal {
+          color: #c300ff !important;
+          text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+          font-family: 'Press Start 2P', cursive;
+        }
+
+        .page-title {
+          color: #ff0080;
+          text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+          font-family: 'Press Start 2P', cursive;
+        }
+
+        .command-input {
+          background: transparent;
+          border: none;
+          color: #f700ff;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.9rem;
+          outline: none;
+          width: 200px;
+        }
+
+        .command-section {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid #333;
+        }
+
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.9);
+          z-index: 1000;
+          backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #111;
+          border: 2px solid #f700ff;
+          border-radius: 8px;
+          padding: 2rem;
+          max-width: 80%;
+          max-height: 80%;
+          box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+
+        .close-modal {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          color: #f700ff;
+          font-size: 1.5rem;
+          cursor: pointer;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Mobile responsive */
+        @media screen and (max-width: 768px) {
+          .photo-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+          
+          .terminal-prompt {
+            font-size: 0.7rem;
+          }
+          
+          body {
+            padding: 0.5rem;
+          }
+        }
+
+        .glitch {
+          animation: glitch 0.3s;
+        }
+
+        @keyframes glitch {
+          0% { transform: translate(0); }
+          20% { transform: translate(-2px, 2px); }
+          40% { transform: translate(-2px, -2px); }
+          60% { transform: translate(2px, 2px); }
+          80% { transform: translate(2px, -2px); }
+          100% { transform: translate(0); }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="main-content">
+        
+        <section class="topic">
+            <h1 class="nes-text is-warning">
+                <a href="./index.html" class="site-title-terminal">#BobaTeagrl.xyz</a>
+            </h1>
+            <h2 class="page-title">LIGHT_CAPTURE_TERMINAL.exe</h2>
+        </section>
+    
+        <div class="terminal-header">
+            <div class="terminal-prompt">
+                <div>$ ssh photography@bobateagrl.xyz</div>
+                <div>Connected to LIGHT_CAPTURE_TERMINAL v2.1.3</div>
+                <div>Initializing photo database...</div>
+                <div>Loading image metadata...</div>
+                <div style="color: #00ff62;">WARNING: Have you Drank water recently?</div>
+                <div style="margin-top: 1rem;">Available commands: view [id] | list | about | exit</div>
+                <div class="command-section">
+                    <span style="color: #f700ff;">user@terminal:~$</span>
+                    <input type="text" class="command-input" placeholder="list" readonly>
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-grid">
+            <!-- Photo 1 -->
+            <div class="photo-terminal" onclick="openPhoto(1)">
+                <div class="photo-header">
+                    Pink.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/pinkthumb.jpg" 
+                         data-full="./Images/photos/full/pink.jpg"
+                         class="photo-image lazy-load" 
+                         alt="very pink sky">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        Pink.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Edited to look like what i saw"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">NEON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 2 -->
+            <div class="photo-terminal" onclick="openPhoto(2)">
+                <div class="photo-header">
+                    Sunset.RAW | STATUS: PROCESSING | ACCESS: LIMITED
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/sunsetthumb.jpg" 
+                         data-full="./Images/photos/full/sunset.jpg"
+                         class="photo-image lazy-load" 
+                         alt="beach sunset">
+                    <div class="photo-placeholder">
+                        [DECRYPTION REQUIRED]<br>
+                        ██▓▓░░▓▓████<br>
+                        Sunset.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        ANALYZING...<br>
+                        ██████░░░░ 60%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"calming huh?"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">CHILL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 3 -->
+            <div class="photo-terminal" onclick="openPhoto(3)">
+                <div class="photo-header">
+                    Wata.RAW | STATUS: ENHANCED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/watathumb.jpg" 
+                         data-full="./Images/photos/full/wata.jpg"
+                         class="photo-image lazy-load" 
+                         alt="sunset over water">
+                    <div class="photo-placeholder">
+                        [SCANNING FOR THREATS]<br>
+                        ░░░░████░░░░<br>
+                        Wata.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        ENHANCING...<br>
+                        ████████░░ 80%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"I dare you to drink it all"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">CALM</span>
+                    </div>
+                </div>
+            </div>
+
+         
+            <!-- Photo 4 -->
+            <div class="photo-terminal" onclick="openPhoto(4)">
+                <div class="photo-header">
+                    cliff.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/jumothumb.jpg" 
+                         data-full="./Images/photos/full/jumo.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Sunset over water from on a cliff">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        Cliff.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Call of the abyss"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">CHILL</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Photo 5 -->
+            <div class="photo-terminal" onclick="openPhoto(5)">
+                <div class="photo-header">
+                    :3.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/colon3thumb.jpg" 
+                         data-full="./Images/photos/full/3.jpg"
+                         class="photo-image lazy-load" 
+                         alt=":3 drawn in sand">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        :3.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">:3</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">:3</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">:3</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">:3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 6 -->
+            <div class="photo-terminal" onclick="openPhoto(6)">
+                <div class="photo-header">
+                    Green.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/greenthumb.jpg" 
+                         data-full="./Images/photos/full/green.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Very green forest">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                       GREEN.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Thats what i call greenery"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">GREEN</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Photo 7 -->
+            <div class="photo-terminal" onclick="openPhoto(7)">
+                <div class="photo-header">
+                    Sunlight.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/greppthumb.jpg" 
+                         data-full="./Images/photos/full/grepp.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Sunlight breaking through leaves">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        SUNLIGHT.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Help im going blind"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">BLINDING</span>
+                    </div>
+                </div>
+            </div>
+               <!-- Photo 8 -->
+               <div class="photo-terminal" onclick="openPhoto(8)">
+                <div class="photo-header">
+                    Log.RAW | STATUS: EXPERIMENTAL | ACCESS: Public
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/zoomlogthumb.jpg" 
+                         data-full="./Images/photos/full/zoomlog.jpg"
+                         class="photo-image lazy-load" 
+                         alt=".5 lens on a log">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        LOG.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"crawling around on the floor be like"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">URABUG</span>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Photo 9 -->
+             <div class="photo-terminal" onclick="openPhoto(9)">
+                <div class="photo-header">
+                    TreeCover.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/treethumb.jpg" 
+                         data-full="./Images/photos/full/tree.jpg"
+                         class="photo-image lazy-load" 
+                         alt="looking up at tree cover">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        TREECOVER.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"People dont look up enough"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">NECK PAIN</span>
+                    </div>
+                </div>
+                </div>
+
+                 <!-- Photo 10 -->
+               <div class="photo-terminal" onclick="openPhoto(10)">
+                <div class="photo-header">
+                    Flower.RAW | STATUS: DYING | ACCESS: ONLYBUGS
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/buggybugbugthumb.jpg" 
+                         data-full="./Images/photos/full/buggybugbug.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Bug on a flower">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        FLOWER.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Im a little buggy bug bug :3"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">SMALL</span>
+                    </div>
+                </div>
+                </div>
+
+
+                 <!-- Photo 11 -->
+               <div class="photo-terminal" onclick="openPhoto(11)">
+                <div class="photo-header">
+                    FlyAway.RAW | STATUS: STABLE | ACCESS: Public
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/flyawaythumb.jpg" 
+                         data-full="./Images/photos/full/flyaway.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Bug on a cable line">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        FLYAWAY.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Wonder if it tastes good in BBQ sauce?"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">HUNGRY</span>
+                    </div>
+                </div>
+                </div>
+
+                 <!-- Photo 12 -->
+               <div class="photo-terminal" onclick="openPhoto(12)">
+                <div class="photo-header">
+                    Buzzz.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/buzzzthumb.jpg" 
+                         data-full="./Images/photos/full/buzzz.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Bug on a lock">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        BUZZZ.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Lil guy wanted to say hi"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">HAPPY</span>
+                    </div>
+                </div>
+                </div>
+
+                 <!-- Photo 13 -->
+               <div class="photo-terminal" onclick="openPhoto(13)">
+                <div class="photo-header">
+                    Hoppy.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/hoppythumb.jpg" 
+                         data-full="./Images/photos/full/hoppy.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Grasshopper looking into camera">
+                    <div class="photo-placeholder">
+                        [ANALYZING COMPOSITION]<br>
+                        ▓▓██░░██▓▓<br>
+                        HOPPY.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        PROCESSING...<br>
+                        ██████████ 100%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+               
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"HE HOPPED INTO ME! NOT THE OTHER WAY AROUND!!"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">FIGHT</span>
+                    </div>
+                </div>
+                </div>
+                <!-- Photo 14 -->
+                <div class="photo-terminal" onclick="openPhoto(14)">
+                    <div class="photo-header">
+                        Spikey.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                    </div>
+                    <div class="photo-content">
+                        <img data-src="./Images/photos/spikeythumb.jpg" 
+                             data-full="./Images/photos/full/spikey.jpg"
+                             class="photo-image lazy-load" 
+                             alt="fluffy catterpiller">
+                        <div class="photo-placeholder">
+                            [ANALYZING COMPOSITION]<br>
+                            ▓▓██░░██▓▓<br>
+                            SPIKEY.jpg
+                        </div>
+                        <div class="loading-text" style="display: none;">
+                            PROCESSING...<br>
+                            ██████████ 100%
+                        </div>
+                        <div class="scan-lines"></div>
+                    </div>
+                   
+                    <div class="photo-info">
+                        <div class="info-line">
+                            <span class="info-label">CAPTURE_DATE:</span>
+                            <span class="info-value">CLASSIFIED</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">DEVICE:</span>
+                            <span class="info-value">PHONE</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">INFO:</span>
+                            <span class="info-value">"Turns out im allergic to this guys poison... ask me how i know"</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">MOOD:</span>
+                            <span class="info-value">oww...</span>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!-- Photo 15 -->
+                <div class="photo-terminal" onclick="openPhoto(15)">
+                    <div class="photo-header">
+                        Smallsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                    </div>
+                    <div class="photo-content">
+                        <img data-src="./Images/photos/smallsnekthumb.jpg" 
+                             data-full="./Images/photos/full/smallsnek.jpg"
+                             class="photo-image lazy-load" 
+                             alt="a small snake">
+                        <div class="photo-placeholder">
+                            [ANALYZING COMPOSITION]<br>
+                            ▓▓██░░██▓▓<br>
+                            SMALLSNEK.jpg
+                        </div>
+                        <div class="loading-text" style="display: none;">
+                            PROCESSING...<br>
+                            ██████████ 100%
+                        </div>
+                        <div class="scan-lines"></div>
+                    </div>
+                   
+                    <div class="photo-info">
+                        <div class="info-line">
+                            <span class="info-label">CAPTURE_DATE:</span>
+                            <span class="info-value">CLASSIFIED</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">DEVICE:</span>
+                            <span class="info-value">PHONE</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">INFO:</span>
+                            <span class="info-value">"He just had a meal :0"</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">MOOD:</span>
+                            <span class="info-value">FULL</span>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!-- Photo 16 -->
+                <div class="photo-terminal" onclick="openPhoto(16)">
+                    <div class="photo-header">
+                        Trees.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                    </div>
+                    <div class="photo-content">
+                        <img data-src="./Images/photos/treesthumb.jpg" 
+                             data-full="./Images/photos/full/trees.jpg"
+                             class="photo-image lazy-load" 
+                             alt="View from in a tree">
+                        <div class="photo-placeholder">
+                            [ANALYZING COMPOSITION]<br>
+                            ▓▓██░░██▓▓<br>
+                            TREES.jpg
+                        </div>
+                        <div class="loading-text" style="display: none;">
+                            PROCESSING...<br>
+                            ██████████ 100%
+                        </div>
+                        <div class="scan-lines"></div>
+                    </div>
+                   
+                    <div class="photo-info">
+                        <div class="info-line">
+                            <span class="info-label">CAPTURE_DATE:</span>
+                            <span class="info-value">CLASSIFIED</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">DEVICE:</span>
+                            <span class="info-value">PHONE</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">INFO:</span>
+                            <span class="info-value">"I like climbing trees for shots"</span>
+                        </div>
+                        <div class="info-line">
+                            <span class="info-label">MOOD:</span>
+                            <span class="info-value">VERTICAL</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Photo 17 -->
+            <div class="photo-terminal" onclick="openPhoto(17)">
+                <div class="photo-header">
+                    Mushshroom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/mushthumb.jpg" 
+                         data-full="./Images/photos/full/mush.jpg"
+                         class="photo-image lazy-load" 
+                         alt="Mushshrooms">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        MUSHROOM.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"Yummy Yummy"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">STOMACH ISSUES</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 18 -->
+            <div class="photo-terminal" onclick="openPhoto(18)">
+                <div class="photo-header">
+                    Shrooms.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/shroomsthumb.jpg" 
+                         data-full="./Images/photos/full/shrooms.jpg"
+                         class="photo-image lazy-load" 
+                         alt="orange shrooms">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        SHROOMS.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"strangly shiny"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">SHROOMS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 19 -->
+            <div class="photo-terminal" onclick="openPhoto(19)">
+                <div class="photo-header">
+                    Waterdrop.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/waterdropthumb.jpg" 
+                         data-full="./Images/photos/full/waterdrop.jpg"
+                         class="photo-image lazy-load" 
+                         alt="water stuck in a web">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        WATERDROP.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"spider thirsty no more"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">WATER INTOXICATION</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 20 -->
+            <div class="photo-terminal" onclick="openPhoto(20)">
+                <div class="photo-header">
+                    Falling.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/fallingthumb.jpg" 
+                         data-full="./Images/photos/full/falling.jpg"
+                         class="photo-image lazy-load" 
+                         alt="broken tree stuck in a tree">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        FALLING.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"i love standing under this"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">CRUSHED TO DEATH</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 21 -->
+            <div class="photo-terminal" onclick="openPhoto(21)">
+                <div class="photo-header">
+                    Mader.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/manderthumb.jpg" 
+                         data-full="./Images/photos/full/mander.jpg"
+                         class="photo-image lazy-load" 
+                         alt="yellow spotted salamader in a hand">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        Pink.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"actually a once in a lifetime find in the area i was in"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">COOL AS HELL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 22 -->
+            <div class="photo-terminal" onclick="openPhoto(22)">
+                <div class="photo-header">
+                    Bigsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/bigsnekthumb.jpg" 
+                         data-full="./Images/photos/full/bigsnek.jpg"
+                         class="photo-image lazy-load" 
+                         alt="silly lookin big snake">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        BIGSNEK.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"What a silly girll"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">SILLY</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal for photo viewing -->
+    <div id="photoModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Photo content will be loaded here -->
+            </div>
+        </div>
+    </div>
+  
+    <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
+        <div class="nes-balloon from-left is-dark">
+            <p style="color: #00ff41; font-family: 'JetBrains Mono', monospace;">connection_terminated_by_user :3</p>
+        </div>
+    </footer>
+
+    <script>
+        // Terminal typing effect
+        const commands = [
+            'list',
+            'view --filter=recent',
+            'Thanks For Looking!',
+            'scan --depth=all',
+            'ur - mom',
+            'When was the last time you brushed your teeth?',
+            'analyze --mode=artistic',
+
+        ];
+        
+        let currentCommand = 0;
+        const commandInput = document.querySelector('.command-input');
+        
+        function typeCommand() {
+            const command = commands[currentCommand];
+            let i = 0;
+            commandInput.value = '';
+            
+            const typing = setInterval(() => {
+                if (i < command.length) {
+                    commandInput.value += command.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                    setTimeout(() => {
+                        currentCommand = (currentCommand + 1) % commands.length;
+                        setTimeout(typeCommand, 1000);
+                    }, 3000);
+                }
+            }, 100);
+        }
+        
+        // Start typing effect after page load
+        setTimeout(typeCommand, 2000);
+
+        // Lazy loading with terminal effects
+        const lazyImages = document.querySelectorAll('.lazy-load');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const container = img.closest('.photo-content');
+                    const placeholder = container.querySelector('.photo-placeholder');
+                    const loadingText = container.querySelector('.loading-text');
+                    
+                    // Show loading animation
+                    placeholder.style.display = 'none';
+                    loadingText.style.display = 'flex';
+                    
+                    // Create decryption overlay
+                    const overlay = document.createElement('div');
+                    overlay.className = 'decryption-overlay';
+                    container.appendChild(overlay);
+                    
+                    // Simulate progressive loading
+                    const progressSteps = [
+                        'INITIALIZING...<br>░░░░░░░░░░ 0%',
+                        'CONNECTING...<br>██░░░░░░░░ 20%',
+                        'DECRYPTING...<br>████░░░░░░ 40%',
+                        'ANALYZING...<br>██████░░░░ 60%',
+                        'ENHANCING...<br>████████░░ 80%',
+                        'COMPLETE<br>██████████ 100%'
+                    ];
+                    
+                    let step = 0;
+                    const progressInterval = setInterval(() => {
+                        if (step < progressSteps.length) {
+                            loadingText.innerHTML = progressSteps[step];
+                            step++;
+                        } else {
+                            clearInterval(progressInterval);
+                        }
+                    }, 300);
+                    
+                    // Load the actual image
+                    const newImg = new Image();
+                    newImg.onload = () => {
+                        setTimeout(() => {
+                            img.src = newImg.src;
+                            img.classList.add('loaded');
+                            loadingText.style.display = 'none';
+                            
+                            // Remove overlay after animation
+                            setTimeout(() => {
+                                if (overlay.parentNode) {
+                                    overlay.remove();
+                                }
+                            }, 2000);
+                        }, 1800); // Wait for progress animation to finish
+                    };
+                    
+                    newImg.onerror = () => {
+                        // Handle loading error
+                        loadingText.innerHTML = 'ERROR: FILE_NOT_FOUND<br>ACCESS_DENIED';
+                        loadingText.style.color = '#ff4444';
+                        placeholder.innerHTML = '[IMAGE CORRUPTED]<br>░░▓▓████▓▓░░<br>RETRY_REQUIRED';
+                        placeholder.style.display = 'flex';
+                        loadingText.style.display = 'none';
+                        if (overlay.parentNode) {
+                            overlay.remove();
+                        }
+                    };
+                    
+                    newImg.src = img.dataset.src;
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+
+        // Photo modal functionality
+        function openPhoto(id) {
+            const modal = document.getElementById('photoModal');
+            const modalContent = document.getElementById('modalContent');
+            const photoTerminal = document.querySelectorAll('.photo-terminal')[id-1];
+            const img = photoTerminal.querySelector('.photo-image');
+            
+            // Add glitch effect to clicked terminal
+            event.currentTarget.classList.add('glitch');
+            setTimeout(() => {
+                event.currentTarget.classList.remove('glitch');
+            }, 300);
+            
+            // Get full resolution image path
+            const fullImageSrc = img.dataset.full || img.src;
+            const isLoaded = img.classList.contains('loaded');
+            
+            if (isLoaded && img.src) {
+                // Show full resolution image
+                modalContent.innerHTML = `
+                    <div style="font-family: 'JetBrains Mono', monospace; color: #7700ff; text-align: center;">
+                        <h3>PHOTO_${String(id).padStart(3, '0')}.RAW</h3>
+                        <div style="margin: 1rem 0;">
+                            <img src="${fullImageSrc}" style="max-width: 100%; max-height: 70vh; object-fit: contain; border: 1px solid #f600ff;">
+                        </div>
+                        <div style="font-size: 0.7rem; color: #888; text-align: left; margin-top: 1rem;">
+                            <div>STATUS: DECRYPTED_SUCCESSFULLY</div>
+                            <div>RESOLUTION: HIGH_QUALITY</div>
+                            <div>COLOR_PROFILE: sRGB</div>
+                            <div>COMPRESSION: OPTIMIZED</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Show loading state in modal
+                modalContent.innerHTML = `
+                    <div style="font-family: 'JetBrains Mono', monospace; color: #00ff41; text-align: center;">
+                        <h3>PHOTO_${String(id).padStart(3, '0')}.RAW</h3>
+                        <div style="margin: 2rem 0; color: #888; font-size: 0.8rem;">
+                            $ loading image data...<br>
+                            $ this image hasn't been decrypted yet<br>
+                            <span style="color: #ffff00;">$ please wait for background processing to complete</span>
+                        </div>
+                        <div style="width: 400px; height: 300px; margin: 0 auto; background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%); background-size: 20px 20px; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
+                            <div style="text-align: center; color: #666;">
+                                IMAGE LOADING...<br>
+                                ░░▓▓████▓▓░░<br>
+                                PLEASE WAIT
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('photoModal').style.display = 'none';
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Random glitch effects on terminals
+        setInterval(() => {
+            const terminals = document.querySelectorAll('.photo-terminal');
+            const randomTerminal = terminals[Math.floor(Math.random() * terminals.length)];
+            if (Math.random() < 0.1) { // 10% chance every interval
+                randomTerminal.classList.add('glitch');
+                setTimeout(() => {
+                    randomTerminal.classList.remove('glitch');
+                }, 300);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
