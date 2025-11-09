@@ -8,30 +8,24 @@
     <link href="./index2.css" rel="stylesheet">
     <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-<style>
-    body {
-    background-color: #1a1d20;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-</style>
-
+    <style>
+        body {
+            background-color: #1a1d20;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+    </style>
 </head>
 
-
 <body>
-    
-
-
     <canvas id="background-canvas"></canvas>
     <div class="main-container">
-
         <div class="site-title">
             <h1 style="color: rgb(236, 85, 236);">Bobateagrl.github.io</h1>
             <p class="site-subtitle nes-text is-warning">welcome to my corner of the internet :3</p>
@@ -47,267 +41,29 @@
             </div>
             
             <div class="nav-item nes-container is-dark clickable">
-                <a href="LightCaptureTerminal.html"  >
+                <a href="LightCaptureTerminal.html">
                     <img src="./Images/photos.png" alt="Photos" loading="lazy">
                 </a>
             </div>
-    
-
         </div>
+    </div>
 
-
-
-
+    <!-- Footer -->
+    <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
+        <div class="nes-balloon from-left is-dark easter-egg-hint">
+            <p>30 Extra lives?</p>
         </div>
+    </footer>
 
+    <!-- P5.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
 
+    <!-- Interactive Background -->
+    <script src="./interactive-background.js"></script>
 
-
-
-</body>
-
-<!-- full transparancy below is mostly stolen or ai idfk javascript and theres like 50 errors in it but it works so its staying -->
-
-
-<!--Interactive Background -->
-<script>
-    let CELL_SIZE = 15;
-    const BACKGROUND_COLOR = '#1a1d20'; // Match body background
-    const GRID_COLOR = [146, 204, 65]; // NES green theme
-    
-    let useImages = false;
-    let numRows, numCols;
-    let currentRow = -2, currentCol = -2;
-    let allNeighbors = [];
-    let img;
-    let canvas;
-
-    function preload() {
-        img = loadImage("./Images/dic.png",
-            () => console.log("Easter egg image loaded!"),
-            () => console.error("Easter egg image failed to load")
-        );
-    }
-
-    function setup() {
-        canvas = createCanvas(windowWidth, windowHeight);
-        canvas.id('background-canvas');
-        canvas.parent(document.body);
-        
-        background(BACKGROUND_COLOR);
-        noFill();
-        numRows = Math.ceil(windowHeight / CELL_SIZE);
-        numCols = Math.ceil(windowWidth / CELL_SIZE);
-    }
-
-    function draw() {
-        background(BACKGROUND_COLOR);
-        
-        // Only create effects when mouse is moving
-        if (mouseX > 0 && mouseY > 0) {
-            let row = floor(mouseY / CELL_SIZE);
-            let col = floor(mouseX / CELL_SIZE);
-            
-            if (row !== currentRow || col !== currentCol) {
-                currentRow = row;
-                currentCol = col;
-                allNeighbors.push(...getRandomNeighbors(row, col));
-            }
-        }
-
-        // Draw all active neighbors
-        for (let neighbor of allNeighbors) {
-            let x = neighbor.col * CELL_SIZE;
-            let y = neighbor.row * CELL_SIZE;
-            neighbor.opacity = max(0, neighbor.opacity - 3); // Slower fade
-
-            if (useImages && img) {
-                tint(255, neighbor.opacity);
-                image(img, x, y, CELL_SIZE, CELL_SIZE);
-                noTint();
-            } else {
-                stroke(GRID_COLOR[0], GRID_COLOR[1], GRID_COLOR[2], neighbor.opacity);
-                strokeWeight(1);
-                rect(x, y, CELL_SIZE, CELL_SIZE);
-            }
-        }
-
-        // Clean up faded neighbors
-        allNeighbors = allNeighbors.filter(neighbor => neighbor.opacity > 0);
-    }
-
-    function getRandomNeighbors(row, col) {
-        let neighbors = [];
-        for (let dRow = -1; dRow <= 1; dRow++) {
-            for (let dCol = -1; dCol <= 1; dCol++) {
-                let neighborRow = row + dRow;
-                let neighborCol = col + dCol;
-                
-                if ((dRow !== 0 || dCol !== 0) && 
-                    neighborRow >= 0 && neighborRow < numRows && 
-                    neighborCol >= 0 && neighborCol < numCols &&
-                    Math.random() < 0.4) { // Lower probability for cleaner effect
-                    neighbors.push({ 
-                        row: neighborRow, 
-                        col: neighborCol, 
-                        opacity: 180 // Start with lower opacity
-                    });
-                }
-            }
-        }
-        return neighbors;
-    }
-
-    function windowResized() {
-        resizeCanvas(windowWidth, windowHeight);
-        numRows = Math.ceil(windowHeight / CELL_SIZE);
-        numCols = Math.ceil(windowWidth / CELL_SIZE);
-        background(BACKGROUND_COLOR);
-    }
-
-    // Konami Code Easter Egg
-    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; 
-    let userInput = [];
-
-    document.addEventListener("keydown", function(event) {
-        userInput.push(event.keyCode);
-        if (userInput.length > konamiCode.length) userInput.shift();
-
-        if (JSON.stringify(userInput) === JSON.stringify(konamiCode)) {
-            useImages = !useImages;
-            CELL_SIZE = useImages ? 22 : 15;
-            
-            // Show success message
-            const hint = document.querySelector('.easter-egg-hint p');
-            const originalText = hint.textContent;
-            hint.textContent = useImages ? "easter egg activated! 🎉" : "easter egg deactivated";
-            hint.style.color = useImages ? "#92cc41" : "#ffc107";
-            
-            setTimeout(() => {
-                hint.textContent = originalText;<!-- P5.js and Interactive Background -->
+    <!-- Page-specific interactions -->
     <script>
-        let CELL_SIZE = 15;
-        const BACKGROUND_COLOR = '#1a1d20'; // Match body background
-        const GRID_COLOR = [146, 204, 65]; // NES green theme
-        
-        let useImages = false;
-        let numRows, numCols;
-        let currentRow = -2, currentCol = -2;
-        let allNeighbors = [];
-        let img;
-        let canvas;
-
-        function preload() {
-            img = loadImage("./Images/dic.png",
-                () => console.log("Easter egg image loaded!"),
-                () => console.error("Easter egg image failed to load")
-            );
-        }
-
-        function setup() {
-            canvas = createCanvas(windowWidth, windowHeight);
-            canvas.id('background-canvas');
-            canvas.parent(document.body);
-            
-            background(BACKGROUND_COLOR);
-            noFill();
-            numRows = Math.ceil(windowHeight / CELL_SIZE);
-            numCols = Math.ceil(windowWidth / CELL_SIZE);
-        }
-
-        function draw() {
-            background(BACKGROUND_COLOR);
-            
-            // Only create effects when mouse is moving
-            if (mouseX > 0 && mouseY > 0) {
-                let row = floor(mouseY / CELL_SIZE);
-                let col = floor(mouseX / CELL_SIZE);
-                
-                if (row !== currentRow || col !== currentCol) {
-                    currentRow = row;
-                    currentCol = col;
-                    allNeighbors.push(...getRandomNeighbors(row, col));
-                }
-            }
-
-            // Draw all active neighbors
-            for (let neighbor of allNeighbors) {
-                let x = neighbor.col * CELL_SIZE;
-                let y = neighbor.row * CELL_SIZE;
-                neighbor.opacity = max(0, neighbor.opacity - 3); // Slower fade
-
-                if (useImages && img) {
-                    tint(255, neighbor.opacity);
-                    image(img, x, y, CELL_SIZE, CELL_SIZE);
-                    noTint();
-                } else {
-                    stroke(GRID_COLOR[0], GRID_COLOR[1], GRID_COLOR[2], neighbor.opacity);
-                    strokeWeight(1);
-                    rect(x, y, CELL_SIZE, CELL_SIZE);
-                }
-            }
-
-            // Clean up faded neighbors
-            allNeighbors = allNeighbors.filter(neighbor => neighbor.opacity > 0);
-        }
-
-        function getRandomNeighbors(row, col) {
-            let neighbors = [];
-            for (let dRow = -1; dRow <= 1; dRow++) {
-                for (let dCol = -1; dCol <= 1; dCol++) {
-                    let neighborRow = row + dRow;
-                    let neighborCol = col + dCol;
-                    
-                    if ((dRow !== 0 || dCol !== 0) && 
-                        neighborRow >= 0 && neighborRow < numRows && 
-                        neighborCol >= 0 && neighborCol < numCols &&
-                        Math.random() < 0.4) { // Lower probability for cleaner effect
-                        neighbors.push({ 
-                            row: neighborRow, 
-                            col: neighborCol, 
-                            opacity: 180 // Start with lower opacity
-                        });
-                    }
-                }
-            }
-            return neighbors;
-        }
-
-        function windowResized() {
-            resizeCanvas(windowWidth, windowHeight);
-            numRows = Math.ceil(windowHeight / CELL_SIZE);
-            numCols = Math.ceil(windowWidth / CELL_SIZE);
-            background(BACKGROUND_COLOR);
-        }
-
-        // Konami Code Easter Egg
-        const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; 
-        let userInput = [];
-
-        document.addEventListener("keydown", function(event) {
-            userInput.push(event.keyCode);
-            if (userInput.length > konamiCode.length) userInput.shift();
-
-            if (JSON.stringify(userInput) === JSON.stringify(konamiCode)) {
-                useImages = !useImages;
-                CELL_SIZE = useImages ? 22 : 15;
-                
-                // Show success message
-                const hint = document.querySelector('.easter-egg-hint p');
-                const originalText = hint.textContent;
-                hint.textContent = useImages ? "easter egg activated! 🎉" : "easter egg deactivated";
-                hint.style.color = useImages ? "#92cc41" : "#ffc107";
-                
-                setTimeout(() => {
-                    hint.textContent = originalText;
-                    hint.style.color = "#92cc41";
-                }, 3000);
-                
-                console.log("Konami code activated! Effect:", useImages ? "ON" : "OFF");
-            }
-        });
-
-        // Add click sound effect simulation (visual feedback)
+        // Click feedback for navigation items
         document.querySelectorAll('.nav-item.clickable').forEach(item => {
             item.addEventListener('click', function() {
                 this.style.transform = 'scale(0.95)';
@@ -317,29 +73,5 @@
             });
         });
     </script>
-                hint.style.color = "#92cc41";
-            }, 3000);
-            
-            console.log("Konami code activated! Effect:", useImages ? "ON" : "OFF");
-        }
-    });
-
-    // Add click sound effect simulation (visual feedback)
-    document.querySelectorAll('.nav-item.clickable').forEach(item => {
-        item.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 100);
-        });
-    });
-</script>
-
- <!-- Footer -->
- <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
-    <div class="nes-balloon from-left is-dark">
-      <p>30 Extra lives?</p>
-    </div>
-  </footer>
-  
-  </html> 
+</body>
+</html>
