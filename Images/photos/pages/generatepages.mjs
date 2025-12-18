@@ -25,9 +25,15 @@ for (const p of photos) {
 <meta name="twitter:description" content="${p.description}">
 <meta name="twitter:image" content="${p.image}">
 
-<meta http-equiv="refresh" content="0; https://bobateagrl.github.io/LightCaptureTerminal.html">
 </head>
-<body>Redirecting…</body>
+<body style="background: #0a0a0a; color: #f700ff; font-family: monospace; text-align: center; padding: 2rem;">
+<h1>${p.title}</h1>
+<img src="https://bobateagrl.github.io/${p.image}" style="max-width: 100%; border: 2px solid #f700ff;"> 
+<h1><a href="https://bobateagrl.github.io/LightCaptureTerminal.html" style="color: #00ff41;">View in Gallery</a></h1>
+
+
+</body>
+
 </html>`;
 
     fs.writeFileSync(path.join(outDir, `${p.id}.html`), html);
