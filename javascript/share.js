@@ -12,7 +12,7 @@ export function initShare() {
     window.copyPhotoLink = (id, e) => {
         e.stopPropagation();
 
-        const url = new URL(`/Images/photos/pages/photo/${id}.html`, location.origin).href;
+        const url = new URL(`${id}.html`, location.origin).href;
 
         navigator.clipboard.writeText(url).then(() => {
             show('Photo link copied! 📋');
