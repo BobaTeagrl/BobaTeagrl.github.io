@@ -17,6 +17,7 @@ for (const p of photos) {
 <meta charset="utf-8">
 <title>${p.title} – Light Capture Terminal</title>
 <meta name="description" content="${p.description}">
+ <link rel="icon" href="https://bobateagrl.github.io/Images/tab.png" type="image/x-icon">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="${p.title}">
