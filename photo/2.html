@@ -16,13 +16,122 @@
 <meta name="twitter:description" content="calming huh?">
 <meta name="twitter:image" content="/Images/photos/full/sunset.jpg">
 
-</head>
-<body style="background: #0a0a0a; color: #f700ff; font-family: monospace; text-align: center; padding: 2rem;">
-<h1>Sunset.RAW</h1>
-<img src="/Images/photos/full/sunset.jpg" style="max-width: 100%; border: 2px solid #f700ff;"> 
-<h1><a href="https://bobateagrl.github.io/LightCaptureTerminal.html" style="color: #00ff41;">View in Gallery</a></h1>
+<style>
+body {
+    background: #0a0a0a;
+    color: #f700ff;
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    padding: 2rem;
+    margin: 0;
+}
 
+.image-container {
+    position: relative;
+    max-width: 100%;
+    margin: 2rem auto;
+    overflow: hidden;
+    border: 2px solid #f700ff;
+    box-shadow: 0 0 20px rgba(247, 0, 255, 0.3);
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+    filter: blur(20px);
+    transform: scale(1.1);
+    transition: opacity 0.3s ease;
+}
+
+.full-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.full-image.loaded {
+    opacity: 1;
+}
+
+.thumbnail.hidden {
+    opacity: 0;
+}
+
+h1 {
+    color: #f700ff;
+    text-shadow: 0 0 10px rgba(247, 0, 255, 0.5);
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.info {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+}
+
+a {
+    color: #00ff41;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    background: #00ff41;
+    color: #0a0a0a;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+.loading {
+    color: #00ff41;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}
+</style>
+</head>
+<body>
+<h1>Sunset.RAW</h1>
+
+<div class="image-container">
+    <img src="/Images/photos/sunsethumb.jpg" class="thumbnail" alt="Sunset.RAW">
+    <img data-src="/Images/photos/full/sunset.jpg" class="full-image" alt="Sunset.RAW">
+</div>
+
+<p class="info">"calming huh?"</p>
+<p class="loading" id="loading">Loading full resolution...</p>
+
+<h2><a href="https://bobateagrl.github.io/LightCaptureTerminal.html?photo=2">← View in Gallery</a></h2>
+
+<script>
+// Progressive image loading
+const fullImg = document.querySelector('.full-image');
+const thumb = document.querySelector('.thumbnail');
+const loading = document.getElementById('loading');
+
+const img = new Image();
+img.onload = () => {
+    fullImg.src = img.src;
+    fullImg.classList.add('loaded');
+    setTimeout(() => {
+        thumb.classList.add('hidden');
+        loading.style.display = 'none';
+    }, 500);
+};
+img.onerror = () => {
+    loading.textContent = 'Failed to load full image';
+    loading.style.color = '#ff4444';
+};
+img.src = fullImg.dataset.src;
+</script>
 
 </body>
-
 </html>
