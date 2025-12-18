@@ -79,7 +79,6 @@
           color: #f700ff;
           font-size: 0.9rem;
           line-height: 1.4;
-          text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
         }
 
         .cursor {
@@ -119,12 +118,17 @@
         }
 
         .photo-header {
-          background: #1a1a1a;
-          padding: 0.5rem 1rem;
-          border-bottom: 1px solid #333;
-          font-size: 0.7rem;
-          color: #f700ff;
+            background: #1a1a1a;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #333;
+            font-size: 0.7rem;
+            color: #f700ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
         }
+
 
         .photo-content {
           position: relative;
@@ -164,7 +168,7 @@
           transition: opacity 0.5s ease;
         }
 
-        .photo-image.loaded {
+        .photo-image{
           opacity: 1;
         }
 
@@ -177,7 +181,7 @@
           font-size: 0.7rem;
           text-align: center;
           z-index: 10;
-          text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+          /*text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);*/
         }
 
         .decryption-overlay {
@@ -186,7 +190,7 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background: 
+          background:
             repeating-linear-gradient(
               90deg,
               transparent,
@@ -267,7 +271,6 @@
 
         .site-title-terminal {
           color: #c300ff !important;
-          text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
           font-family: 'Press Start 2P', cursive;
         }
 
@@ -293,41 +296,7 @@
           border-top: 1px solid #333;
         }
 
-        .modal {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.9);
-          z-index: 1000;
-          backdrop-filter: blur(5px);
-        }
 
-        .modal-content {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background: #111;
-          border: 2px solid #f700ff;
-          border-radius: 8px;
-          padding: 2rem;
-          max-width: 80%;
-          max-height: 80%;
-          box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
-        }
-
-        .close-modal {
-          position: absolute;
-          top: 10px;
-          right: 15px;
-          color: #f700ff;
-          font-size: 1.5rem;
-          cursor: pointer;
-          font-family: 'JetBrains Mono', monospace;
-        }
 
         /* Mobile responsive */
         @media screen and (max-width: 768px) {
@@ -345,6 +314,39 @@
           }
         }
 
+        #photoModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+        }
+
+        #modalContent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .modal-photo {
+            max-width: 90vw;
+            max-height: 90vh;
+            text-align: center;
+            color: #f700ff;
+            font-family: monospace;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border: 1px solid #f700ff;
+            display: block;
+            margin: 0 auto;
+        }
+
+
         .glitch {
           animation: glitch 0.3s;
         }
@@ -356,6 +358,72 @@
           60% { transform: translate(2px, 2px); }
           80% { transform: translate(2px, -2px); }
           100% { transform: translate(0); }
+        }
+
+        #modalClose {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #f700ff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        #modalClose:hover {
+            opacity: 0.7;
+        }
+
+
+        /*  added for share button  */
+        .share-button {
+            background: transparent;
+            border: 1px solid #f700ff;
+            color: #f700ff;
+            padding: 0.25rem 0.6rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .share-button:hover {
+            background: #f700ff;
+            color: #000;
+        }
+
+
+
+        .share-option:hover {
+            background: rgba(247, 0, 255, 0.2);
+            color: #f700ff;
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            z-index: 10000;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
         }
 
     </style>
@@ -375,7 +443,7 @@
             <div class="terminal-prompt">
                 <div>$ ssh photography@Bobateagrl.github.io</div>
                 <div>Connected to LIGHT_CAPTURE_TERMINAL v2.1.3</div>
-                <div>WARNING: Creator sucks at coding javascript is needed for this page</div>
+                <div>WARNING: Creator sucks at coding JavaScript is needed for this page</div>
                 <div>Initializing photo database...</div>
                 <div>Loading image metadata...</div>
                 <div style="color: #00ff62;">WARNING: Have you Drank water recently?</div>
@@ -390,12 +458,14 @@
 
         <div class="photo-grid">
             <!-- Photo 1 -->
-            <div class="photo-terminal" onclick="openPhoto(1)">
+            <div class="photo-terminal" data-photo-id="1">
                 <div class="photo-header">
-                    Pink.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                    <span>Pink.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(1, event)">SHARE</button>
                 </div>
+
                 <div class="photo-content">
-                    <img data-src="./Images/photos/pinkthumb.jpg" 
+                    <img data-src="./Images/photos/pinkthumb.jpg"
                          data-full="./Images/photos/full/pink.jpg"
                          class="photo-image lazy-load" 
                          alt="very pink sky">
@@ -421,7 +491,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"Edited to look like what i saw"</span>
+                        <span class="info-value">"Edited to look like what I saw"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -431,9 +501,11 @@
             </div>
 
             <!-- Photo 2 -->
-            <div class="photo-terminal" onclick="openPhoto(2)">
+            <div class="photo-terminal" data-photo-id="2">
                 <div class="photo-header">
-                    Sunset.RAW | STATUS: PROCESSING | ACCESS: LIMITED
+                <span>    Sunset.RAW | STATUS: PROCESSING | ACCESS: LIMITED </span>
+                    <button class="share-button" onclick="copyPhotoLink(2, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/sunsetthumb.jpg" 
@@ -473,9 +545,11 @@
             </div>
 
             <!-- Photo 3 -->
-            <div class="photo-terminal" onclick="openPhoto(3)">
+            <div class="photo-terminal" data-photo-id="3">
                 <div class="photo-header">
-                    Wata.RAW | STATUS: ENHANCED | ACCESS: PUBLIC
+                  <span>  Wata.RAW | STATUS: ENHANCED | ACCESS: PUBLIC </span>
+                    <button class="share-button" onclick="copyPhotoLink(3, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/watathumb.jpg" 
@@ -516,9 +590,11 @@
 
          
             <!-- Photo 4 -->
-            <div class="photo-terminal" onclick="openPhoto(4)">
+            <div class="photo-terminal" data-photo-id="4">
                 <div class="photo-header">
-                    cliff.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                  <span>  cliff.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA</span>
+                    <button class="share-button" onclick="copyPhotoLink(4, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/jumothumb.jpg" 
@@ -557,9 +633,11 @@
                 </div>
             </div>
             <!-- Photo 5 -->
-            <div class="photo-terminal" onclick="openPhoto(5)">
+            <div class="photo-terminal" data-photo-id="5">
                 <div class="photo-header">
-                    :3.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                  <span>  :3.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA</span>
+                    <button class="share-button" onclick="copyPhotoLink(5, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/colon3thumb.jpg" 
@@ -599,9 +677,11 @@
             </div>
 
             <!-- Photo 6 -->
-            <div class="photo-terminal" onclick="openPhoto(6)">
+            <div class="photo-terminal" data-photo-id="6">
                 <div class="photo-header">
-                    Green.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                 <span>   Green.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA</span>
+                    <button class="share-button" onclick="copyPhotoLink(6, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/greenthumb.jpg" 
@@ -631,7 +711,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"Thats what i call greenery"</span>
+                        <span class="info-value">"That's what I call greenery"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -640,9 +720,11 @@
                 </div>
             </div>
             <!-- Photo 7 -->
-            <div class="photo-terminal" onclick="openPhoto(7)">
+            <div class="photo-terminal" data-photo-id="7">
                 <div class="photo-header">
-                    Sunlight.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                  <span>  Sunlight.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA</span>
+                    <button class="share-button" onclick="copyPhotoLink(7, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/greppthumb.jpg" 
@@ -681,9 +763,11 @@
                 </div>
             </div>
                <!-- Photo 8 -->
-               <div class="photo-terminal" onclick="openPhoto(8)">
+               <div class="photo-terminal" data-photo-id="8">
                 <div class="photo-header">
-                    Log.RAW | STATUS: EXPERIMENTAL | ACCESS: Public
+                  <span>  Log.RAW | STATUS: EXPERIMENTAL | ACCESS: Public</span>
+                    <button class="share-button" onclick="copyPhotoLink(8, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/zoomlogthumb.jpg" 
@@ -723,9 +807,11 @@
             </div>
 
              <!-- Photo 9 -->
-             <div class="photo-terminal" onclick="openPhoto(9)">
+             <div class="photo-terminal" data-photo-id="9">
                 <div class="photo-header">
-                    TreeCover.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA
+                  <span>  TreeCover.RAW | STATUS: EXPERIMENTAL | ACCESS: BETA</span>
+                    <button class="share-button" onclick="copyPhotoLink(9, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/treethumb.jpg" 
@@ -765,9 +851,11 @@
                 </div>
 
                  <!-- Photo 10 -->
-               <div class="photo-terminal" onclick="openPhoto(10)">
+               <div class="photo-terminal" data-photo-id="10">
                 <div class="photo-header">
-                    Flower.RAW | STATUS: DYING | ACCESS: ONLYBUGS
+                   <span> Flower.RAW | STATUS: DYING | ACCESS: ONLYBUGS</span>
+                    <button class="share-button" onclick="copyPhotoLink(10, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/buggybugbugthumb.jpg" 
@@ -808,9 +896,11 @@
 
 
                  <!-- Photo 11 -->
-               <div class="photo-terminal" onclick="openPhoto(11)">
+               <div class="photo-terminal" data-photo-id="11">
                 <div class="photo-header">
-                    FlyAway.RAW | STATUS: STABLE | ACCESS: Public
+                   <span> FlyAway.RAW | STATUS: STABLE | ACCESS: Public</span>
+                    <button class="share-button" onclick="copyPhotoLink(11, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/flyawaythumb.jpg" 
@@ -840,7 +930,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"Does tastes good in BBQ sauce?"</span>
+                        <span class="info-value">"Does taste good in BBQ sauce?"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -850,9 +940,11 @@
                 </div>
 
                  <!-- Photo 12 -->
-               <div class="photo-terminal" onclick="openPhoto(12)">
+               <div class="photo-terminal"data-photo-id="12">
                 <div class="photo-header">
-                    Buzzz.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                 <span>   Buzzz.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(12, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/buzzzthumb.jpg" 
@@ -892,9 +984,11 @@
                 </div>
 
                  <!-- Photo 13 -->
-               <div class="photo-terminal" onclick="openPhoto(13)">
+               <div class="photo-terminal" data-photo-id="13">
                 <div class="photo-header">
-                    Hoppy.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                 <span>   Hoppy.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(13, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/hoppythumb.jpg" 
@@ -933,15 +1027,17 @@
                 </div>
                 </div>
                 <!-- Photo 14 -->
-                <div class="photo-terminal" onclick="openPhoto(14)">
+                <div class="photo-terminal" data-photo-id="14">
                     <div class="photo-header">
-                        Spikey.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                       <span> Spikey.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                        <button class="share-button" onclick="copyPhotoLink(14, event)">SHARE</button>
+
                     </div>
                     <div class="photo-content">
                         <img data-src="./Images/photos/spikeythumb.jpg" 
                              data-full="./Images/photos/full/spikey.jpg"
                              class="photo-image lazy-load" 
-                             alt="fluffy catterpiller">
+                             alt="fluffy caterpillar">
                         <div class="photo-placeholder">
                             [ANALYZING COMPOSITION]<br>
                             ▓▓██░░██▓▓<br>
@@ -965,7 +1061,7 @@
                         </div>
                         <div class="info-line">
                             <span class="info-label">INFO:</span>
-                            <span class="info-value">"Turns out im allergic to this guys poison... ask me how i know"</span>
+                            <span class="info-value">"Turns out im allergic to this guys poison... ask me how I know"</span>
                         </div>
                         <div class="info-line">
                             <span class="info-label">MOOD:</span>
@@ -976,9 +1072,11 @@
 
 
                     <!-- Photo 15 -->
-                <div class="photo-terminal" onclick="openPhoto(15)">
+                <div class="photo-terminal" data-photo-id="15">
                     <div class="photo-header">
-                        Smallsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                      <span>  Smallsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                        <button class="share-button" onclick="copyPhotoLink(15, event)">SHARE</button>
+
                     </div>
                     <div class="photo-content">
                         <img data-src="./Images/photos/smallsnekthumb.jpg" 
@@ -1019,9 +1117,11 @@
 
 
                     <!-- Photo 16 -->
-                <div class="photo-terminal" onclick="openPhoto(16)">
+                <div class="photo-terminal" data-photo-id="16">
                     <div class="photo-header">
-                        Trees.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                      <span>  Trees.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                        <button class="share-button" onclick="copyPhotoLink(16, event)">SHARE</button>
+
                     </div>
                     <div class="photo-content">
                         <img data-src="./Images/photos/treesthumb.jpg" 
@@ -1061,15 +1161,17 @@
                     </div>
 
                     <!-- Photo 17 -->
-            <div class="photo-terminal" onclick="openPhoto(17)">
+            <div class="photo-terminal" data-photo-id="17">
                 <div class="photo-header">
-                    Mushshroom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Mushshroom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(12, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/mushthumb.jpg" 
                          data-full="./Images/photos/full/mush.jpg"
                          class="photo-image lazy-load" 
-                         alt="Mushshrooms">
+                         alt="Mushrooms">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
                         ░░▓▓████▓▓░░<br>
@@ -1102,9 +1204,11 @@
             </div>
 
             <!-- Photo 18 -->
-            <div class="photo-terminal" onclick="openPhoto(18)">
+            <div class="photo-terminal" data-photo-id="18">
                 <div class="photo-header">
-                    Shrooms.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Shrooms.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(18, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/shroomsthumb.jpg" 
@@ -1133,7 +1237,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"strangly shiny"</span>
+                        <span class="info-value">"strangely shiny"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -1143,9 +1247,11 @@
             </div>
 
             <!-- Photo 19 -->
-            <div class="photo-terminal" onclick="openPhoto(19)">
+            <div class="photo-terminal" data-photo-id="19">
                 <div class="photo-header">
-                    Waterdrop.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                 <span>   Waterdrop.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(19, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/waterdropthumb.jpg" 
@@ -1184,9 +1290,11 @@
             </div>
 
             <!-- Photo 20 -->
-            <div class="photo-terminal" onclick="openPhoto(20)">
+            <div class="photo-terminal" data-photo-id="20">
                 <div class="photo-header">
-                    Falling.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Falling.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(20, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/fallingthumb.jpg" 
@@ -1215,7 +1323,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"i love standing under this"</span>
+                        <span class="info-value">"I love standing under this"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -1227,15 +1335,17 @@
 
 
             <!-- Photo 21 -->
-            <div class="photo-terminal" onclick="openPhoto(21)">
+            <div class="photo-terminal" data-photo-id="21">
                 <div class="photo-header">
-                    Mader.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Mader.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(21, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/manderthumb.jpg" 
                          data-full="./Images/photos/full/mander.jpg"
                          class="photo-image lazy-load" 
-                         alt="yellow spotted salamader in a hand">
+                         alt="yellow spotted salamander in a hand">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
                         ░░▓▓████▓▓░░<br>
@@ -1258,7 +1368,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"actually a once in a lifetime find in the area i was in"</span>
+                        <span class="info-value">"actually a once in a lifetime find in the area I was in"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -1268,9 +1378,11 @@
             </div>
 
             <!-- Photo 22 -->
-            <div class="photo-terminal" onclick="openPhoto(22)">
+            <div class="photo-terminal" data-photo-id="22">
                 <div class="photo-header">
-                    Bigsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Bigsnek.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(22, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/bigsnekthumb.jpg" 
@@ -1299,7 +1411,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"What a silly girll"</span>
+                        <span class="info-value">"What a silly girl"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -1310,9 +1422,11 @@
 
 
               <!-- Photo 23 -->
-              <div class="photo-terminal" onclick="openPhoto(23)">
+              <div class="photo-terminal" data-photo-id="23">
                 <div class="photo-header">
-                    Blossom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Blossom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(23, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/blossomthumb.png" 
@@ -1341,7 +1455,7 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">INFO:</span>
-                        <span class="info-value">"i like flowers :3"</span>
+                        <span class="info-value">"I like flowers :3"</span>
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
@@ -1351,9 +1465,11 @@
             </div>
 
             <!-- Photo 24 -->
-            <div class="photo-terminal" onclick="openPhoto(24)">
+            <div class="photo-terminal" data-photo-id="24">
                 <div class="photo-header">
-                    Betterblossom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Betterblossom.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(24, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/betterblossomthumb.jpg" 
@@ -1386,15 +1502,17 @@
                     </div>
                     <div class="info-line">
                         <span class="info-label">MOOD:</span>
-                        <span class="info-value">YUM FLOWWERS</span>
+                        <span class="info-value">YUM FLOWERS</span>
                     </div>
                 </div>
             </div>
 
             <!-- Photo 25 -->
-            <div class="photo-terminal" onclick="openPhoto(25)">
+            <div class="photo-terminal" data-photo-id="25">
                 <div class="photo-header">
-                    Whiteflower.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                  <span>  Whiteflower.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(25, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/whiteflowerthumb.jpg" 
@@ -1433,9 +1551,11 @@
             </div>
 
             <!-- Photo 26 -->
-            <div class="photo-terminal" onclick="openPhoto(26)">
+            <div class="photo-terminal" data-photo-id="26">
                 <div class="photo-header">
-                    Bush.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                   <span> Bush.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(26, event)">SHARE</button>
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/bushthumb.jpg" 
@@ -1475,10 +1595,15 @@
 
 
 
+
+
             <!-- Photo 27 -->
-            <div class="photo-terminal" onclick="openPhoto(27)">
+            <div class="photo-terminal" data-photo-id="27">
                 <div class="photo-header">
-                    Wettree.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC
+                    <span>Wettree.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <button class="share-button" onclick="copyPhotoLink(27, event)">SHARE</button>
+
+
                 </div>
                 <div class="photo-content">
                     <img data-src="./Images/photos/wettreethumb.jpg" 
@@ -1516,224 +1641,155 @@
                 </div>
             </div>
 
+            <!-- Photo 28 -->
+            <div class="photo-terminal" data-photo-id="28">
+                <div class="photo-header">
+                 <span>  Ducklake.RAW | STATUS: ARCHIVED | ACCESS: DUCKS ONLY</span>
+                    <button class="share-button" onclick="copyPhotoLink(28, event)">SHARE</button>
+
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/ducklakethumb.jpg"
+                         data-full="./Images/photos/full/ducklake.jpg"
+                         class="photo-image lazy-load"
+                         alt="ducks swimming on a lake">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                       DUCKLAKE.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"I love ducks"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">Quack</span>
+                    </div>
+                </div>
+            </div>
 
 
+            <!-- Photo 29 -->
+            <div class="photo-terminal" data-photo-id="29">
+                <div class="photo-header">
+                    <span>  Lakeone.RAW | STATUS: ARCHIVED | ACCESS: NOT YOU</span>
+                    <button class="share-button" onclick="copyPhotoLink(29, event)">SHARE</button>
+
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/lakeonethumb.jpg"
+                         data-full="./Images/photos/full/lakeone.jpg"
+                         class="photo-image lazy-load"
+                         alt="picture of a lake from dock">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        LAKEONE.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"pretty water :0"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">too cold for swimming</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo 30 -->
+            <div class="photo-terminal" data-photo-id="30">
+                <div class="photo-header">
+                    <span>  Laketwo.RAW | STATUS: ARCHIVED | ACCESS: UR MOM</span>
+                    <button class="share-button" onclick="copyPhotoLink(30, event)">SHARE</button>
+
+                </div>
+                <div class="photo-content">
+                    <img data-src="./Images/photos/laketwothumb.jpg"
+                         data-full="./Images/photos/full/laketwo.jpg"
+                         class="photo-image lazy-load"
+                         alt="Large ish body of water">
+                    <div class="photo-placeholder">
+                        [CLICK TO DECRYPT IMAGE]<br>
+                        ░░▓▓████▓▓░░<br>
+                        Laketwo.jpg
+                    </div>
+                    <div class="loading-text" style="display: none;">
+                        DECRYPTING...<br>
+                        ████░░░░░░ 40%
+                    </div>
+                    <div class="scan-lines"></div>
+                </div>
+                <div class="photo-info">
+                    <div class="info-line">
+                        <span class="info-label">CAPTURE_DATE:</span>
+                        <span class="info-value">CLASSIFIED</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">DEVICE:</span>
+                        <span class="info-value">PHONE</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">INFO:</span>
+                        <span class="info-value">"not good for drinking"</span>
+                    </div>
+                    <div class="info-line">
+                        <span class="info-label">MOOD:</span>
+                        <span class="info-value">geese are mean :<</span>
+                    </div>
+                </div>
+            </div>
 
 
         </div>
     </div>
 
     <!-- Modal for photo viewing -->
-    <div id="photoModal" class="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div id="modalContent">
-                <!-- Photo content will be loaded here -->
-            </div>
-        </div>
+    <div id="photoModal">
+        <button id="modalClose" aria-label="Close">X</button>
+        <div id="modalContent"></div>
     </div>
-  
+
+
+
     <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
         <div class="nes-balloon from-left is-dark">
             <p style="color: #00ff41; font-family: 'JetBrains Mono', monospace;">connection_terminated_by_user :3</p>
         </div>
     </footer>
 
-    <script>
-        // Terminal typing effect
-        const commands = [
-            'list',
-            'view --filter=recent',
-            'Thanks For Looking!',
-            'scan --depth=all',
-            'ur - mom',
-            'When was the last time you brushed your teeth?',
-            'analyze --mode=artistic',
-
-        ];
-        
-        let currentCommand = 0;
-        const commandInput = document.querySelector('.command-input');
-        
-        function typeCommand() {
-            const command = commands[currentCommand];
-            let i = 0;
-            commandInput.value = '';
-            
-            const typing = setInterval(() => {
-                if (i < command.length) {
-                    commandInput.value += command.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typing);
-                    setTimeout(() => {
-                        currentCommand = (currentCommand + 1) % commands.length;
-                        setTimeout(typeCommand, 1000);
-                    }, 3000);
-                }
-            }, 100);
-        }
-        
-        // Start typing effect after page load
-        setTimeout(typeCommand, 2000);
-
-        // Lazy loading with terminal effects
-        const lazyImages = document.querySelectorAll('.lazy-load');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const container = img.closest('.photo-content');
-                    const placeholder = container.querySelector('.photo-placeholder');
-                    const loadingText = container.querySelector('.loading-text');
-                    
-                    // Show loading animation
-                    placeholder.style.display = 'none';
-                    loadingText.style.display = 'flex';
-                    
-                    // Create decryption overlay
-                    const overlay = document.createElement('div');
-                    overlay.className = 'decryption-overlay';
-                    container.appendChild(overlay);
-                    
-                    // Simulate progressive loading
-                    const progressSteps = [
-                        'INITIALIZING...<br>░░░░░░░░░░ 0%',
-                        'CONNECTING...<br>██░░░░░░░░ 20%',
-                        'DECRYPTING...<br>████░░░░░░ 40%',
-                        'ANALYZING...<br>██████░░░░ 60%',
-                        'ENHANCING...<br>████████░░ 80%',
-                        'COMPLETE<br>██████████ 100%'
-                    ];
-                    
-                    let step = 0;
-                    const progressInterval = setInterval(() => {
-                        if (step < progressSteps.length) {
-                            loadingText.innerHTML = progressSteps[step];
-                            step++;
-                        } else {
-                            clearInterval(progressInterval);
-                        }
-                    }, 300);
-                    
-                    // Load the actual image
-                    const newImg = new Image();
-                    newImg.onload = () => {
-                        setTimeout(() => {
-                            img.src = newImg.src;
-                            img.classList.add('loaded');
-                            loadingText.style.display = 'none';
-                            
-                            // Remove overlay after animation
-                            setTimeout(() => {
-                                if (overlay.parentNode) {
-                                    overlay.remove();
-                                }
-                            }, 2000);
-                        }, 1800); // Wait for progress animation to finish
-                    };
-                    
-                    newImg.onerror = () => {
-                        // Handle loading error
-                        loadingText.innerHTML = 'ERROR: FILE_NOT_FOUND<br>ACCESS_DENIED';
-                        loadingText.style.color = '#ff4444';
-                        placeholder.innerHTML = '[IMAGE CORRUPTED]<br>░░▓▓████▓▓░░<br>RETRY_REQUIRED';
-                        placeholder.style.display = 'flex';
-                        loadingText.style.display = 'none';
-                        if (overlay.parentNode) {
-                            overlay.remove();
-                        }
-                    };
-                    
-                    newImg.src = img.dataset.src;
-                    observer.unobserve(img);
-                }
-            });
-        });
-        
-        lazyImages.forEach(img => imageObserver.observe(img));
-
-        // Photo modal functionality
-        function openPhoto(id) {
-            const modal = document.getElementById('photoModal');
-            const modalContent = document.getElementById('modalContent');
-            const photoTerminal = document.querySelectorAll('.photo-terminal')[id-1];
-            const img = photoTerminal.querySelector('.photo-image');
-            
-            // Add glitch effect to clicked terminal
-            event.currentTarget.classList.add('glitch');
-            setTimeout(() => {
-                event.currentTarget.classList.remove('glitch');
-            }, 300);
-            
-            // Get full resolution image path
-            const fullImageSrc = img.dataset.full || img.src;
-            const isLoaded = img.classList.contains('loaded');
-            
-            if (isLoaded && img.src) {
-                // Show full resolution image
-                modalContent.innerHTML = `
-                    <div style="font-family: 'JetBrains Mono', monospace; color: #7700ff; text-align: center;">
-                        <h3>PHOTO_${String(id).padStart(3, '0')}.RAW</h3>
-                        <div style="margin: 1rem 0;">
-                            <img src="${fullImageSrc}" style="max-width: 100%; max-height: 70vh; object-fit: contain; border: 1px solid #f600ff;">
-                        </div>
-                        <div style="font-size: 0.7rem; color: #888; text-align: left; margin-top: 1rem;">
-                            <div>STATUS: DECRYPTED_SUCCESSFULLY</div>
-                            <div>RESOLUTION: HIGH_QUALITY</div>
-                            <div>COLOR_PROFILE: sRGB</div>
-                            <div>COMPRESSION: OPTIMIZED</div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Show loading state in modal
-                modalContent.innerHTML = `
-                    <div style="font-family: 'JetBrains Mono', monospace; color: #00ff41; text-align: center;">
-                        <h3>PHOTO_${String(id).padStart(3, '0')}.RAW</h3>
-                        <div style="margin: 2rem 0; color: #888; font-size: 0.8rem;">
-                            $ loading image data...<br>
-                            $ this image hasn't been decrypted yet<br>
-                            <span style="color: #ffff00;">$ please wait for background processing to complete</span>
-                        </div>
-                        <div style="width: 400px; height: 300px; margin: 0 auto; background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%); background-size: 20px 20px; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
-                            <div style="text-align: center; color: #666;">
-                                IMAGE LOADING...<br>
-                                ░░▓▓████▓▓░░<br>
-                                PLEASE WAIT
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            modal.style.display = 'block';
-        }
-        
-        function closeModal() {
-            document.getElementById('photoModal').style.display = 'none';
-        }
-        
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Random glitch effects on terminals
-        setInterval(() => {
-            const terminals = document.querySelectorAll('.photo-terminal');
-            const randomTerminal = terminals[Math.floor(Math.random() * terminals.length)];
-            if (Math.random() < 0.1) { // 10% chance every interval
-                randomTerminal.classList.add('glitch');
-                setTimeout(() => {
-                    randomTerminal.classList.remove('glitch');
-                }, 300);
-            }
-        }, 5000);
-    </script>
-    
+    <script type="module" src="./javascript/main.js"></script>
     <!-- P5.js Library -->
     <script src="javascript/p5.min.js"></script>
 
