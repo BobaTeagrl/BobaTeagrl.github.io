@@ -46,6 +46,7 @@ body {
     overflow: hidden;
     border: 2px solid #f700ff;
     box-shadow: 0 0 20px rgba(247, 0, 255, 0.3);
+    display: grid;  /* Add this */
 }
 
 .thumbnail {
@@ -54,17 +55,15 @@ body {
     filter: blur(20px);
     transform: scale(1.1);
     transition: opacity 0.3s ease;
+    grid-area: 1/1;  /* Add this - both images occupy same grid cell */
 }
 
 .full-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;  /* Let it be natural size */
     opacity: 0;
     transition: opacity 0.5s ease;
+    grid-area: 1/1;  /* Add this */
 }
 
 .full-image.loaded {
