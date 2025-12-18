@@ -13,7 +13,7 @@ export function initShare() {
         e.stopPropagation();
 
         // IMPORTANT: absolute path from repo root
-        const url = `${location.origin}/photo/${id}.html`;
+        const url = `https://${id}.html`;
 
         navigator.clipboard.writeText(url).then(() => {
             show('Photo page link copied');
