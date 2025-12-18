@@ -12,13 +12,15 @@ export function initShare() {
     window.copyPhotoLink = (id, e) => {
         e.stopPropagation();
 
-        const url = new URL(`${id}.html`, location.origin).href;
+        // IMPORTANT: absolute path from repo root
+        const url = `${location.origin}/BobaTeagrl.github.io/photo/${id}.html`;
 
         navigator.clipboard.writeText(url).then(() => {
-            show('Photo link copied! 📋');
+            show('Photo page link copied');
             closeAllMenus();
         });
     };
+
 
     // Add this function
     function closeAllMenus() {
