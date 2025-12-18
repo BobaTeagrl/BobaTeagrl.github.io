@@ -13,7 +13,7 @@ export function initShare() {
         e.stopPropagation();
 
         // IMPORTANT: absolute path from repo root
-        const url = `${location.origin}/BobaTeagrl.github.io/photo/${id}.html`;
+        const url = `${location.origin}/photo/${id}.html`;
 
         navigator.clipboard.writeText(url).then(() => {
             show('Photo page link copied');
