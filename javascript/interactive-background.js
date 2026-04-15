@@ -108,7 +108,15 @@ const CODE_SEQUENCES = {
             showHint("Rainbow mode activated! ", "#ff00ff");
         },
         description: "Type RAINBOW - Rainbow effect"
-    }
+    },
+    whenexist: {
+        keys: [87, 72, 69, 78, 69, 88, 73, 83, 84], // W H E N E X I S T
+        action: () => {
+            flashImage('./Images/whenexist.jpg', 800);
+            showHint("me when", "#c300ff");
+        },
+        description: "Type WHENEXIST - show a meme"
+    },
 };
 
 // Track input 
@@ -230,6 +238,35 @@ function showHint(message, color) {
         }, 3000);
     }
     console.log(message);
+}
+
+function flashImage(src, duration = 600) {
+    let flashEl = document.getElementById('flash-overlay');
+    if (!flashEl) {
+        flashEl = document.createElement('img');
+        flashEl.id = 'flash-overlay';
+        Object.assign(flashEl.style, {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: '60vw',
+            maxHeight: '60vh',
+            objectFit: 'contain',
+            zIndex: '9999',
+            opacity: '0',
+            transition: 'opacity 0.15s ease',
+            pointerEvents: 'none',
+        });
+        document.body.appendChild(flashEl);
+    }
+
+    flashEl.src = src;
+    flashEl.style.opacity = '1';
+    clearTimeout(flashEl._timeout);
+    flashEl._timeout = setTimeout(() => {
+        flashEl.style.opacity = '0';
+    }, duration);
 }
 
 // Code detection system
