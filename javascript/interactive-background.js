@@ -1,5 +1,3 @@
-
-
 let CELL_SIZE = 15;
 const BACKGROUND_COLOR = '#1a1d20';
 let GRID_COLOR = [0, 200, 255]; // cyanish
@@ -15,14 +13,27 @@ let canvas;
 let debugMode = false;
 let keyPressLog = [];
 
-// Code sequences 
+// Maps special keys to the legacy keyCode values
+function getKeyCode(key) {
+    const specialKeys = {
+        ArrowUp: 38,
+        ArrowDown: 40,
+        ArrowLeft: 37,
+        ArrowRight: 39,
+    };
+    if (specialKeys[key] !== undefined) return specialKeys[key];
+    if (key.length === 1) return key.toUpperCase().charCodeAt(0);
+    return 0;
+}
+
+// Code sequences
 const CODE_SEQUENCES = {
     debug: {
         keys: [68, 69, 66, 85, 71], // D E B U G
         action: () => {
             debugMode = !debugMode;
             showHint(debugMode ? "Debug mode ON " : "Debug mode OFF", debugMode ? "#ffff00" : "#888888");
-            
+
             if (debugMode) {
                 console.log(" DEBUG MODE ACTIVATED");
                 console.log("━".repeat(50));
@@ -135,7 +146,7 @@ const CODE_SEQUENCES = {
     },
 };
 
-// Track input 
+// Track input
 let codeInputs = {};
 Object.keys(CODE_SEQUENCES).forEach(key => {
     codeInputs[key] = [];
@@ -156,23 +167,23 @@ function setup() {
     canvas.style('top', '0');
     canvas.style('left', '0');
     canvas.style('z-index', '-1');
-    
+
     background(BACKGROUND_COLOR);
     noFill();
     numRows = Math.ceil(windowHeight / CELL_SIZE);
     numCols = Math.ceil(windowWidth / CELL_SIZE);
-    
+
     // very very subtle hint
     console.log(" Type 'DEBUG' to see available codes and key presses");
 }
 
 function draw() {
     background(BACKGROUND_COLOR);
-    
+
     if (mouseX > 0 && mouseY > 0) {
         let row = floor(mouseY / CELL_SIZE);
         let col = floor(mouseX / CELL_SIZE);
-        
+
         if (row !== currentRow || col !== currentCol) {
             currentRow = row;
             currentCol = col;
@@ -201,7 +212,7 @@ function draw() {
             } else {
                 stroke(color[0], color[1], color[2], neighbor.opacity);
             }
-            
+
             strokeWeight(1);
             rect(x, y, CELL_SIZE, CELL_SIZE);
         }
@@ -216,14 +227,14 @@ function getRandomNeighbors(row, col) {
         for (let dCol = -1; dCol <= 1; dCol++) {
             let neighborRow = row + dRow;
             let neighborCol = col + dCol;
-            
-            if ((dRow !== 0 || dCol !== 0) && 
-                neighborRow >= 0 && neighborRow < numRows && 
+
+            if ((dRow !== 0 || dCol !== 0) &&
+                neighborRow >= 0 && neighborRow < numRows &&
                 neighborCol >= 0 && neighborCol < numCols &&
                 Math.random() < 0.4) {
-                neighbors.push({ 
-                    row: neighborRow, 
-                    col: neighborCol, 
+                neighbors.push({
+                    row: neighborRow,
+                    col: neighborCol,
                     opacity: 180
                 });
             }
@@ -247,7 +258,7 @@ function showHint(message, color) {
         const originalColor = hintElement.style.color;
         hintElement.textContent = message;
         hintElement.style.color = color;
-        
+
         setTimeout(() => {
             hintElement.textContent = originalText;
             hintElement.style.color = originalColor || "#92cc41";
@@ -287,29 +298,30 @@ function flashImage(src, duration = 600) {
 
 // Code detection system
 document.addEventListener("keydown", function(event) {
+    const keyCode = getKeyCode(event.key);
+
     // Debug mode key logging
     if (debugMode) {
-        const keyChar = String.fromCharCode(event.keyCode);
-        const keyInfo = `Key: '${keyChar}' | Code: ${event.keyCode}`;
+        const keyInfo = `Key: '${event.key}' | Code: ${keyCode}`;
         keyPressLog.push(keyInfo);
-        
+
         // Keep only last 20 key presses
         if (keyPressLog.length > 20) {
             keyPressLog.shift();
         }
-        
+
         console.log(`  ${keyInfo} | Recent: [${keyPressLog.slice(-10).map(k => k.split("'")[1]).join(', ')}]`);
     }
-    
+
     // Check each code sequence
     Object.entries(CODE_SEQUENCES).forEach(([name, config]) => {
-        codeInputs[name].push(event.keyCode);
-        
+        codeInputs[name].push(keyCode);
+
         // Keep only the last N keys (length of the code)
         if (codeInputs[name].length > config.keys.length) {
             codeInputs[name].shift();
         }
-        
+
         // Check if the input matches the code
         if (JSON.stringify(codeInputs[name]) === JSON.stringify(config.keys)) {
             if (debugMode) {
