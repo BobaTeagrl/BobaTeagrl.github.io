@@ -112,10 +112,26 @@ const CODE_SEQUENCES = {
     whenexist: {
         keys: [87, 72, 69, 78, 69, 88, 73, 83, 84], // W H E N E X I S T
         action: () => {
-            flashImage('./Images/whenexist.jpg', 800);
+            flashImage('./Images/whenexist.jpg', 1000);
             showHint("me when", "#c300ff");
         },
         description: "Type WHENEXIST - show a meme"
+    },
+    gock: {
+        keys: [71, 79, 67, 75], // G O C K
+        action: () => {
+            flashImage('./Images/gock.jpg', 1000);
+            showHint("Hmmmm yummy", "#0ed594");
+        },
+        description: "Type gock - show a meme"
+    },
+    mom: {
+        keys: [77, 79, 77], // M O M
+        action: () => {
+            flashImage('./Images/mom.jpg', 1000);
+            showHint("REALLY? IN FRONT OF YOUR MOM??", "#d50e85");
+        },
+        description: "Type mom - show a meme"
     },
 };
 
@@ -235,7 +251,7 @@ function showHint(message, color) {
         setTimeout(() => {
             hintElement.textContent = originalText;
             hintElement.style.color = originalColor || "#92cc41";
-        }, 3000);
+        }, 5000);
     }
     console.log(message);
 }
