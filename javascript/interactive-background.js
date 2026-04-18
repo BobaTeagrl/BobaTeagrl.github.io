@@ -59,7 +59,7 @@ const CODE_SEQUENCES = {
         action: () => {
             useImages = !useImages;
             CELL_SIZE = useImages ? 22 : 15;
-            showHint(useImages ? "easter egg activated!" : "easter egg deactivated", useImages ? "#92cc41" : "#ffc107");
+            showHint(useImages ? "Easter egg activated!" : "Easter egg deactivated", useImages ? "#92cc41" : "#ffc107");
         },
         description: "Konami Code - Toggle image mode"
     },
@@ -123,7 +123,7 @@ const CODE_SEQUENCES = {
     whenexist: {
         keys: [87, 72, 69, 78, 69, 88, 73, 83, 84], // W H E N E X I S T
         action: () => {
-            flashImage('./Images/whenexist.jpg', 1000);
+            flashImage('./Images/whenexist.jpg', 3000);
             showHint("me when", "#c300ff");
         },
         description: "Type WHENEXIST - show a meme"
@@ -131,7 +131,7 @@ const CODE_SEQUENCES = {
     gock: {
         keys: [71, 79, 67, 75], // G O C K
         action: () => {
-            flashImage('./Images/gock.jpg', 1000);
+            flashImage('./Images/gock.jpg', 3000);
             showHint("Hmmmm yummy", "#0ed594");
         },
         description: "Type gock - show a meme"
@@ -139,10 +139,18 @@ const CODE_SEQUENCES = {
     mom: {
         keys: [77, 79, 77], // M O M
         action: () => {
-            flashImage('./Images/mom.jpg', 1000);
+            flashImage('./Images/mom.jpg', 3000);
             showHint("REALLY? IN FRONT OF YOUR MOM??", "#d50e85");
         },
         description: "Type mom - show a meme"
+    },
+    kms: {
+        keys: [84, 73, 77, 69, 84, 79], // T I M E T O
+        action: () => {
+            flashImage('./Images/kms.webp', 3000);
+            showHint("ITS TIME TO KMS", "#0d3570");
+        },
+        description: "Type timeto - show a meme"
     },
 };
 
