@@ -306,6 +306,9 @@ function flashImage(src, duration = 600) {
 
 // Code detection system
 document.addEventListener("keydown", function(event) {
+    const modal = document.getElementById('photoModal');
+    if (modal && modal.style.display === 'flex') return;
+
     const keyCode = getKeyCode(event.key);
 
     // Debug mode key logging

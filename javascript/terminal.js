@@ -5,7 +5,10 @@ export function initTerminalTyping() {
         'Thanks For Looking!',
         'scan --depth=all',
         'ur - mom',
-        'analyze --mode=artistic'
+        'analyze --mode=artistic',
+        /*expand area for msgs or will get cut off*/
+        'did you wash your ass today?',
+        'why are you still looking here go view photos'
     ];
 
     const input = document.querySelector('.command-input');

@@ -31,90 +31,126 @@
 
 
     <style>
-        body { 
-          background-color: #0a0a0a; 
-          padding: 1rem; 
-          position: relative;
-          min-height: 100vh;
-          overflow-x: hidden;
-          font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .main-content {
-          max-width: 1000px;
-          margin: 0 auto;
-          position: relative;
-          z-index: 11; 
+       /* base */
+        body {
+            background-color: #0a0a0a;
+            padding: 1rem;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            touch-action: pan-y;
         }
 
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 11;
+        }
+
+        /* terminal header thingy*/
         .terminal-header {
-          background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-          border: 2px solid #c300ff;
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 2rem;
-          box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-          position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #c300ff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            position: relative;
         }
 
         .terminal-header::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 255, 65, 0.03) 2px,
-            rgba(0, 255, 65, 0.03) 4px
-          );
-          pointer-events: none;
-          border-radius: 6px;
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 65, 0.03) 2px,
+                    rgba(0, 255, 65, 0.03) 4px
+            );
+            pointer-events: none;
+            border-radius: 6px;
         }
 
         .terminal-prompt {
-          color: #f700ff;
-          font-size: 0.9rem;
-          line-height: 1.4;
+            color: #f700ff;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .command-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+
+        .command-input {
+            background: transparent;
+            border: none;
+            color: #f700ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            width: 200px;
         }
 
         .cursor {
-          display: inline-block;
-          background-color: #f700ff;
-          animation: blink 1s infinite;
-          width: 8px;
-          height: 1rem;
-          margin-left: 2px;
+            display: inline-block;
+            background-color: #f700ff;
+            animation: blink 1s infinite;
+            width: 8px;
+            height: 1rem;
+            margin-left: 2px;
         }
 
         @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
+        /* page titles */
+        .site-title-terminal {
+            color: #c300ff !important;
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 3.5vw, 2rem);
+        }
+
+        .page-title {
+            color: #ff0080;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.55rem, 3vw, 1.5rem);
+        }
+
+        .topic {
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        /* photo grid */
         .photo-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
-          margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
+        /* photo cards */
         .photo-terminal {
-          background: #111;
-          border: 1px solid #333;
-          border-radius: 4px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          position: relative;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .photo-terminal:hover {
-          border-color: #e100ff;
-          box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-          transform: translateY(-2px);
+            border-color: #e100ff;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            transform: translateY(-2px);
         }
 
         .photo-header {
@@ -129,304 +165,107 @@
             gap: 0.5rem;
         }
 
-
         .photo-content {
-          position: relative;
-          height: 250px;
-          background: #000;
-          overflow: hidden;
-          cursor: pointer;
-        }
-
-        .photo-placeholder {
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
-                      linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
-                      linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
-                      linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
-          background-size: 20px 20px;
-          background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #666;
-          font-size: 0.8rem;
-          transition: all 0.3s ease;
-        }
-
-        .photo-placeholder:hover {
-          background-color: rgba(0, 255, 65, 0.05);
-          color: #f700ff;
+            position: relative;
+            height: 250px;
+            background: #000;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         .photo-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0;
-          transition: opacity 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
 
-        .photo-image{
-          opacity: 1;
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background:
+                    linear-gradient(45deg,  #1a1a1a 25%, transparent 25%),
+                    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+                    linear-gradient(45deg,  transparent 75%, #1a1a1a 75%),
+                    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .photo-placeholder:hover {
+            background-color: rgba(0, 255, 65, 0.05);
+            color: #f700ff;
         }
 
         .loading-text {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          color: #f700ff;
-          font-size: 0.7rem;
-          text-align: center;
-          z-index: 10;
-          /*text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);*/
-        }
-
-        .decryption-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background:
-            repeating-linear-gradient(
-              90deg,
-              transparent,
-              transparent 2px,
-              rgba(0, 255, 65, 0.1) 2px,
-              rgba(0, 255, 65, 0.1) 4px
-            ),
-            repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              rgba(0, 255, 65, 0.1) 2px,
-              rgba(0, 255, 65, 0.1) 4px
-            );
-          animation: decrypt 2s ease-out forwards;
-          z-index: 5;
-        }
-
-        @keyframes decrypt {
-          0% { 
-            opacity: 1; 
-            background-size: 4px 4px, 4px 4px;
-          }
-          50% { 
-            opacity: 0.7; 
-            background-size: 8px 8px, 8px 8px;
-          }
-          100% { 
-            opacity: 0; 
-            background-size: 20px 20px, 20px 20px;
-          }
-        }
-
-        .scan-lines {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 255, 65, 0.05) 2px,
-            rgba(0, 255, 65, 0.05) 4px
-          );
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .photo-terminal:hover .scan-lines {
-          opacity: 1;
-        }
-
-        .photo-info {
-          background: #0a0a0a;
-          padding: 1rem;
-          font-size: 0.65rem;
-          line-height: 1.4;
-          color: #888;
-          font-family: 'JetBrains Mono', monospace;
-        }
-
-        .info-line {
-          margin: 0.2rem 0;
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .info-label {
-          color: #f700ff;
-        }
-
-        .info-value {
-          color: #fff;
-        }
-
-        .site-title-terminal {
-          color: #c300ff !important;
-          font-family: 'Press Start 2P', cursive;
-        }
-
-        .page-title {
-          color: #ff0080;
-          text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
-          font-family: 'Press Start 2P', cursive;
-        }
-
-        .command-input {
-          background: transparent;
-          border: none;
-          color: #f700ff;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.9rem;
-          outline: none;
-          width: 200px;
-        }
-
-        .command-section {
-          margin-top: 1rem;
-          padding-top: 1rem;
-          border-top: 1px solid #333;
-        }
-
-
-
-        /* Mobile responsive */
-        @media screen and (max-width: 768px) {
-          .photo-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          
-          .terminal-prompt {
-            font-size: 0.7rem;
-          }
-          
-          body {
-            padding: 0.5rem;
-          }
-        }
-
-        #photoModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 9999;
-        }
-
-        #modalContent {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .modal-photo {
-            max-width: 90vw;
-            max-height: 90vh;
-            text-align: center;
-            color: #f700ff;
-            font-family: monospace;
-        }
-
-        .modal-image {
-            max-width: 100%;
-            max-height: 70vh;
-            object-fit: contain;
-            border: 1px solid #f700ff;
-            display: block;
-            margin: 0 auto;
-        }
-
-
-        .glitch {
-          animation: glitch 0.3s;
-        }
-
-        @keyframes glitch {
-          0% { transform: translate(0); }
-          20% { transform: translate(-2px, 2px); }
-          40% { transform: translate(-2px, -2px); }
-          60% { transform: translate(2px, 2px); }
-          80% { transform: translate(2px, -2px); }
-          100% { transform: translate(0); }
-        }
-
-        #modalClose {
             position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: #f700ff;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 10000;
-        }
-
-        #modalClose:hover {
-            opacity: 0.7;
-        }
-
-        .modal-image-container {
-            position: relative;
-            max-width: 90vw;
-            max-height: 70vh;
-            margin: 1rem auto;
-            display: grid;
-            place-items: center;
-        }
-
-        .modal-thumbnail {
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
-            filter: blur(20px);
-            transform: scale(1.05);
-            transition: opacity 0.3s ease;
-            grid-area: 1/1;
-        }
-
-        .modal-full-image {
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            grid-area: 1/1;
-        }
-
-        .modal-full-image.loaded {
-            opacity: 1;
-        }
-
-        .modal-thumbnail.hidden {
-            opacity: 0;
-        }
-
-        .modal-loading {
-            position: absolute;
-            bottom: 1rem;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            color: #00ff41;
+            transform: translate(-50%, -50%);
+            color: #f700ff;
             font-size: 0.7rem;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
-            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
             z-index: 10;
         }
 
-        /*  added for share button  */
+        .scan-lines {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 65, 0.05) 2px,
+                    rgba(0, 255, 65, 0.05) 4px
+            );
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-terminal:hover .scan-lines { opacity: 1; }
+
+        .decryption-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px),
+                    repeating-linear-gradient(0deg,  transparent, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px);
+            animation: decrypt 2s ease-out forwards;
+            z-index: 5;
+        }
+
+        @keyframes decrypt {
+            0%   { opacity: 1;   background-size: 4px 4px,   4px 4px; }
+            50%  { opacity: 0.7; background-size: 8px 8px,   8px 8px; }
+            100% { opacity: 0;   background-size: 20px 20px, 20px 20px; }
+        }
+
+        .photo-info {
+            background: #0a0a0a;
+            padding: 1rem;
+            font-size: 0.65rem;
+            line-height: 1.4;
+            color: #888;
+        }
+
+        .info-line {
+            margin: 0.2rem 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-label { color: #f700ff; }
+        .info-value  { color: #fff; }
+
+       /* share button */
         .share-button {
             background: transparent;
             border: 1px solid #f700ff;
@@ -444,50 +283,197 @@
             color: #000;
         }
 
-
-
         .share-option:hover {
             background: rgba(247, 0, 255, 0.2);
             color: #f700ff;
         }
 
-        /*.copy-notification {*/
-        /*    position: fixed;*/
-        /*    top: 20px;*/
-        /*    right: 20px;*/
-        /*    background: #1a1a1a;*/
-        /*    border: 2px solid #00ff41;*/
-        /*    color: #00ff41;*/
-        /*    padding: 1rem 1.5rem;*/
-        /*    border-radius: 8px;*/
-        /*    font-family: 'JetBrains Mono', monospace;*/
-        /*    z-index: 10000;*/
-        /*    animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;*/
-        /*}*/
+        /* modal*/
+        #photoModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            touch-action: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modalClose {
+            position: fixed;
+            top: 12px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #f700ff;
+            color: #f700ff;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10001;
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalClose:hover { opacity: 0.7; }
+
+        #modalContent { display: contents; }
+
+        .modal-photo {
+            width: 95vw;
+            max-width: 95vw;
+            text-align: center;
+            color: #f700ff;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 2.5rem 0.5rem 0.5rem;
+            pointer-events: auto;
+        }
+
+        .modal-photo h3 {
+            font-size: 0.8rem;
+            margin: 0 0 0.5rem;
+        }
+
+        .modal-image-container {
+            position: relative;
+            display: grid;
+            place-items: center;
+            max-width: 90vw;
+            margin: 0 auto;
+        }
+
+        /* both images stack in same grid cell */
+        .modal-thumbnail,
+        .modal-full-image {
+            grid-area: 1 / 1;
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: calc(100dvh - 160px);
+            object-fit: contain;
+            border: 1px solid #f700ff;
+        }
+
+        .modal-thumbnail {
+            filter: blur(20px);
+            transform: scale(1.05);
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-full-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .modal-full-image.loaded { opacity: 1; }
+        .modal-thumbnail.hidden  { opacity: 0; }
+
+        .modal-loading {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff41;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /*nav bar in model*/
+        .modal-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid #f700ff;
+            color: #f700ff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 3px;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover { background: rgba(247, 0, 255, 0.15); }
+
+        .nav-hint {
+            font-size: 0.65rem;
+            color: #666;
+        }
+
+        /*animation shits (usused still delete or use soon probably)*/
+        .glitch { animation: glitch 0.3s; }
+
+        @keyframes glitch {
+            0%   { transform: translate(0); }
+            20%  { transform: translate(-2px,  2px); }
+            40%  { transform: translate(-2px, -2px); }
+            60%  { transform: translate( 2px,  2px); }
+            80%  { transform: translate( 2px, -2px); }
+            100% { transform: translate(0); }
+        }
 
         @keyframes slideIn {
             from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            to   { transform: translateX(0);     opacity: 1; }
         }
 
         @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
+            from { transform: translateX(0);     opacity: 1; }
+            to   { transform: translateX(400px); opacity: 0; }
         }
 
+        /* mobile fixes*/
+        @media (max-width: 768px) {
+            body { padding: 0.5rem; }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .terminal-prompt { font-size: 0.7rem; }
+
+            .modal-photo h3 {
+                font-size: 0.65rem;
+                margin: 0.3rem 0;
+            }
+
+            .nav-hint {
+                font-size: 0;  /* hide text, show pseudo */
+            }
+
+            .nav-hint::before {
+                content: 'swipe left and right or down to close';
+                font-size: 0.65rem;
+                color: #666;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="main-content">
-        
+
         <section class="topic">
             <h1 class="nes-text is-warning">
                 <a href="./index.html" class="site-title-terminal">#Bobateagrl.github.io</a>
             </h1>
             <h2 class="page-title">LIGHT_CAPTURE_TERMINAL.exe</h2>
         </section>
-    
+
         <div class="terminal-header">
             <div class="terminal-prompt">
                 <div>$ ssh photography@Bobateagrl.github.io</div>
@@ -510,14 +496,14 @@
             <!-- Photo 1 -->
             <div class="photo-terminal" data-photo-id="1">
                 <div class="photo-header">
-                    <span>Pink.RAW | STATUS: ARCHIVED | ACCESS: PUBLIC</span>
+                    <span>Pink.RAW | STATUS: ARCHIVED | ACCESS: ALIENS</span>
                     <button class="share-button" onclick="copyPhotoLink(1, event)">SHARE</button>
                 </div>
 
                 <div class="photo-content">
                     <img data-src="./Images/photos/pinkthumb.jpg"
                          data-full="./Images/photos/full/pink.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="very pink sky">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -553,14 +539,14 @@
             <!-- Photo 2 -->
             <div class="photo-terminal" data-photo-id="2">
                 <div class="photo-header">
-                <span>    Sunset.RAW | STATUS: PROCESSING | ACCESS: LIMITED </span>
+                <span>    Sunset.RAW | STATUS: PROCESSING | ACCESS: ANYONE BUT THE MOON </span>
                     <button class="share-button" onclick="copyPhotoLink(2, event)">SHARE</button>
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/sunsetthumb.jpg" 
+                    <img data-src="./Images/photos/sunsetthumb.jpg"
                          data-full="./Images/photos/full/sunset.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="beach sunset">
                     <div class="photo-placeholder">
                         [DECRYPTION REQUIRED]<br>
@@ -573,7 +559,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-                
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -602,9 +588,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/watathumb.jpg" 
+                    <img data-src="./Images/photos/watathumb.jpg"
                          data-full="./Images/photos/full/wata.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="sunset over water">
                     <div class="photo-placeholder">
                         [SCANNING FOR THREATS]<br>
@@ -617,7 +603,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -638,7 +624,7 @@
                 </div>
             </div>
 
-         
+
             <!-- Photo 4 -->
             <div class="photo-terminal" data-photo-id="4">
                 <div class="photo-header">
@@ -647,9 +633,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/jumothumb.jpg" 
+                    <img data-src="./Images/photos/jumothumb.jpg"
                          data-full="./Images/photos/full/jumo.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Sunset over water from on a cliff">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -662,7 +648,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -690,9 +676,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/colon3thumb.jpg" 
+                    <img data-src="./Images/photos/colon3thumb.jpg"
                          data-full="./Images/photos/full/3.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt=":3 drawn in sand">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -705,7 +691,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-                
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -734,9 +720,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/greenthumb.jpg" 
+                    <img data-src="./Images/photos/greenthumb.jpg"
                          data-full="./Images/photos/full/green.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Very green forest">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -749,7 +735,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -777,9 +763,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/greppthumb.jpg" 
+                    <img data-src="./Images/photos/greppthumb.jpg"
                          data-full="./Images/photos/full/grepp.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Sunlight breaking through leaves">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -792,7 +778,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -815,14 +801,14 @@
             <!-- Photo 8 -->
             <div class="photo-terminal" data-photo-id="8">
                 <div class="photo-header">
-                  <span>  Log.RAW | STATUS: EXPERIMENTAL | ACCESS: Public</span>
+                  <span>  Log.RAW | STATUS: EXPERIMENTAL | ACCESS: TERMITES</span>
                     <button class="share-button" onclick="copyPhotoLink(8, event)">SHARE</button>
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/zoomlogthumb.jpg" 
+                    <img data-src="./Images/photos/zoomlogthumb.jpg"
                          data-full="./Images/photos/full/zoomlog.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt=".5 lens on a log">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -835,7 +821,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -864,9 +850,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/treethumb.jpg" 
+                    <img data-src="./Images/photos/treethumb.jpg"
                          data-full="./Images/photos/full/tree.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="looking up at tree cover">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -879,7 +865,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -908,9 +894,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/buggybugbugthumb.jpg" 
+                    <img data-src="./Images/photos/buggybugbugthumb.jpg"
                          data-full="./Images/photos/full/buggybugbug.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Bug on a flower">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -923,7 +909,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -948,14 +934,14 @@
             <!-- Photo 11 -->
             <div class="photo-terminal" data-photo-id="11">
                 <div class="photo-header">
-                   <span> FlyAway.RAW | STATUS: STABLE | ACCESS: Public</span>
+                   <span> FlyAway.RAW | STATUS: STABLE | ACCESS: FUCKBUDDY</span>
                     <button class="share-button" onclick="copyPhotoLink(11, event)">SHARE</button>
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/flyawaythumb.jpg" 
+                    <img data-src="./Images/photos/flyawaythumb.jpg"
                          data-full="./Images/photos/full/flyaway.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Bug on a cable line">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -968,7 +954,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -997,9 +983,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/buzzzthumb.jpg" 
+                    <img data-src="./Images/photos/buzzzthumb.jpg"
                          data-full="./Images/photos/full/buzzz.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Bug on a lock">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -1012,7 +998,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -1041,9 +1027,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/hoppythumb.jpg" 
+                    <img data-src="./Images/photos/hoppythumb.jpg"
                          data-full="./Images/photos/full/hoppy.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Grasshopper looking into camera">
                     <div class="photo-placeholder">
                         [ANALYZING COMPOSITION]<br>
@@ -1056,7 +1042,7 @@
                     </div>
                     <div class="scan-lines"></div>
                 </div>
-               
+
                 <div class="photo-info">
                     <div class="info-line">
                         <span class="info-label">CAPTURE_DATE:</span>
@@ -1085,9 +1071,9 @@
 
                     </div>
                     <div class="photo-content">
-                        <img data-src="./Images/photos/spikeythumb.jpg" 
+                        <img data-src="./Images/photos/spikeythumb.jpg"
                              data-full="./Images/photos/full/spikey.jpg"
-                             class="photo-image lazy-load" 
+                             class="photo-image lazy-load"
                              alt="fluffy caterpillar">
                         <div class="photo-placeholder">
                             [ANALYZING COMPOSITION]<br>
@@ -1100,7 +1086,7 @@
                         </div>
                         <div class="scan-lines"></div>
                     </div>
-                   
+
                     <div class="photo-info">
                         <div class="info-line">
                             <span class="info-label">CAPTURE_DATE:</span>
@@ -1129,9 +1115,9 @@
 
                     </div>
                     <div class="photo-content">
-                        <img data-src="./Images/photos/smallsnekthumb.jpg" 
+                        <img data-src="./Images/photos/smallsnekthumb.jpg"
                              data-full="./Images/photos/full/smallsnek.jpg"
-                             class="photo-image lazy-load" 
+                             class="photo-image lazy-load"
                              alt="a small snake">
                         <div class="photo-placeholder">
                             [ANALYZING COMPOSITION]<br>
@@ -1144,7 +1130,7 @@
                         </div>
                         <div class="scan-lines"></div>
                     </div>
-                   
+
                     <div class="photo-info">
                         <div class="info-line">
                             <span class="info-label">CAPTURE_DATE:</span>
@@ -1173,9 +1159,9 @@
 
                     </div>
                     <div class="photo-content">
-                        <img data-src="./Images/photos/treesthumb.jpg" 
+                        <img data-src="./Images/photos/treesthumb.jpg"
                              data-full="./Images/photos/full/trees.jpg"
-                             class="photo-image lazy-load" 
+                             class="photo-image lazy-load"
                              alt="View from in a tree">
                         <div class="photo-placeholder">
                             [ANALYZING COMPOSITION]<br>
@@ -1188,7 +1174,7 @@
                         </div>
                         <div class="scan-lines"></div>
                     </div>
-                   
+
                     <div class="photo-info">
                         <div class="info-line">
                             <span class="info-label">CAPTURE_DATE:</span>
@@ -1217,9 +1203,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/mushthumb.jpg" 
+                    <img data-src="./Images/photos/mushthumb.jpg"
                          data-full="./Images/photos/full/mush.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="Mushrooms">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1260,9 +1246,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/shroomsthumb.jpg" 
+                    <img data-src="./Images/photos/shroomsthumb.jpg"
                          data-full="./Images/photos/full/shrooms.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="orange shrooms">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1303,9 +1289,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/waterdropthumb.jpg" 
+                    <img data-src="./Images/photos/waterdropthumb.jpg"
                          data-full="./Images/photos/full/waterdrop.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="water stuck in a web">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1346,9 +1332,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/fallingthumb.jpg" 
+                    <img data-src="./Images/photos/fallingthumb.jpg"
                          data-full="./Images/photos/full/falling.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="broken tree stuck in a tree">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1389,9 +1375,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/manderthumb.jpg" 
+                    <img data-src="./Images/photos/manderthumb.jpg"
                          data-full="./Images/photos/full/mander.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="yellow spotted salamander in a hand">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1432,9 +1418,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/bigsnekthumb.jpg" 
+                    <img data-src="./Images/photos/bigsnekthumb.jpg"
                          data-full="./Images/photos/full/bigsnek.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="silly lookin big snake">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1475,9 +1461,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/blossomthumb.png" 
+                    <img data-src="./Images/photos/blossomthumb.png"
                          data-full="./Images/photos/full/blossom.png"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="white flowers">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1518,9 +1504,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/betterblossomthumb.jpg" 
+                    <img data-src="./Images/photos/betterblossomthumb.jpg"
                          data-full="./Images/photos/full/betterblossom.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="more white flowers">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1561,9 +1547,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/whiteflowerthumb.jpg" 
+                    <img data-src="./Images/photos/whiteflowerthumb.jpg"
                          data-full="./Images/photos/full/whiteflower.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="White flowers in a tree">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1604,9 +1590,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/bushthumb.jpg" 
+                    <img data-src="./Images/photos/bushthumb.jpg"
                          data-full="./Images/photos/full/bush.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="bush in the rain">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1648,9 +1634,9 @@
 
                 </div>
                 <div class="photo-content">
-                    <img data-src="./Images/photos/wettreethumb.jpg" 
+                    <img data-src="./Images/photos/wettreethumb.jpg"
                          data-full="./Images/photos/full/wettree.jpg"
-                         class="photo-image lazy-load" 
+                         class="photo-image lazy-load"
                          alt="tree in the rain">
                     <div class="photo-placeholder">
                         [CLICK TO DECRYPT IMAGE]<br>
@@ -1854,7 +1840,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Photo 32 -->
             <div class="photo-terminal" data-photo-id="32">
                 <div class="photo-header">
