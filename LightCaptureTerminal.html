@@ -461,11 +461,157 @@
                 color: #666;
             }
         }
+
+       /*stickers*/
+
+       .sticker {
+           position: fixed;
+           pointer-events: none;
+           z-index: 0;
+           transition: opacity 0.4s ease;
+       }
+
+       .chibi {
+           top: 25vh;
+           left: 5vw;
+           width: 75px;
+           height: 75px;
+           transform: rotate(25deg);
+       }
+
+       .inu {
+           top: 65vh;
+           right: 2vw;
+           width: 200px;
+           height: auto;
+           transform: rotate(9deg);
+       }
+
+       .headpats {
+           bottom: 10vh;
+           left: 3vw;
+           width: 125px;
+           height: 125px;
+           transform: rotate(-10deg);
+       }
+
+       .fangs {
+           top: 12vh;
+           right: 7vw;
+           width: 125px;
+           height: 125px;
+           transform: rotate(-14deg);
+       }
+
+       .rave {
+           top: 50vh;
+           left: 8vw;
+           width: 125px;
+           height: 125px;
+           transform: rotate(4deg);
+       }
+
+       .boo {
+           top: 85vh;
+           right: 16vw;
+           width: 80px;
+           height: 80px;
+           transform: rotate(-15deg);
+       }
+       .venuspickingmeup {
+           bottom: 45vh;
+           right: 10vw;
+           width: 150px;
+           height: 200px;
+           transform: rotate(-15deg);
+       }
+       .littlestabbyguy {
+           bottom: 80vh;
+           left: 8vw;
+           width: 15%;
+           height: 22%;
+           transform: rotate(-15deg);
+       }
+
+       /* Responsive sticker management */
+       @media screen and (max-width: 1400px) {
+           .chibi, .headpats, .rave {
+               opacity: 0.7;
+           }
+       }
+
+       @media screen and (max-width: 1224px) {
+           .fangs {
+               opacity: 0.6;
+               width: 100px;
+               height: 100px;
+           }
+           .inu {
+               opacity: 0.8;
+               width: 120px;
+           }
+           .venuspickingmeup {
+               opacity: 0.6;
+               width: 15%;
+               height: 15%;
+           }
+       }
+
+       @media screen and (max-width: 1200px) {
+           .chibi, .headpats, .rave {
+               display: none;
+           }
+           .inu {
+               width: 150px;
+               right: -20px;
+           }
+           .fangs {
+               right: 10vw;
+           }
+           .sticker {
+               display: none !important;
+           }
+       }
+
+       /* Very short screens */
+       @media screen and (max-height: 600px) {
+           .headpats, .boo {
+               display: none;
+           }
+       }
+
+       @media screen and (max-height: 500px) {
+           .sticker {
+               display: none !important;
+           }
+       }
+
+       /* Ultra-wide adjustments */
+       @media screen and (min-width: 1920px) {
+           .chibi {
+               left: 8vw;
+           }
+           .headpats {
+               left: 6vw;
+           }
+           .rave {
+               left: 12vw;
+           }
+       }
     </style>
 </head>
 
 <body>
-    <div class="main-content">
+<!-- Sticker Images -->
+<img src="./Images/chibi.png" class="sticker chibi" alt="chibi sticker">
+<img src="./Images/SkeleyInu.png" class="sticker inu" alt="skeley inu sticker">
+<img src="./Images/headpatSkeley.png" class="sticker headpats" alt="headpat sticker">
+<img src="./Images/SkeleySharps.png" class="sticker fangs" alt="fangs sticker">
+<img src="./Images/skeleyRave.png" class="sticker rave" alt="rave sticker">
+<img src="./Images/boo.png" class="sticker boo" alt="boo sticker">
+<img src="./Images/venuspickingmeup.png" class="venuspickingmeup sticker" alt="venus picking me up sticker">
+<img src="Images/littlestabbyguy.png" class="littlestabbyguy sticker" alt="little penguin with a knife"/>
+<div class="main-content">
 
         <section class="topic">
             <h1 class="nes-text is-warning">

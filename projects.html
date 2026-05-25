@@ -47,14 +47,14 @@
     }
 
     .sticker {
-      position: fixed; 
-      pointer-events: none; 
-      z-index: 0; 
-      transition: opacity 0.4s ease; 
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.4s ease;
     }
 
     .chibi {
-      top: 15vh;
+      top: 25vh;
       left: 5vw;
       width: 75px;
       height: 75px;
@@ -62,7 +62,7 @@
     }
 
     .inu {
-      top: 38vh;
+      top: 65vh;
       right: 2vw;
       width: 200px;
       height: auto;
@@ -78,15 +78,15 @@
     }
 
     .fangs {
-      top: 15vh;
-      right: 15vw;
+      top: 12vh;
+      right: 7vw;
       width: 125px;
       height: 125px;
       transform: rotate(-14deg);
     }
 
     .rave {
-      top: 45vh;
+      top: 50vh;
       left: 8vw;
       width: 125px;
       height: 125px;
@@ -94,12 +94,27 @@
     }
 
     .boo {
-      bottom: 10vh;
-      right: 18vw;
+      top: 85vh;
+      right: 16vw;
       width: 80px;
       height: 80px;
       transform: rotate(-15deg);
     }
+    .venuspickingmeup {
+      bottom: 45vh;
+      right: 10vw;
+      width: 150px;
+      height: 200px;
+      transform: rotate(-15deg);
+    }
+    .littlestabbyguy {
+      bottom: 80vh;
+      left: 8vw;
+      width: 15%;
+      height: 22%;
+      transform: rotate(-15deg);
+    }
+
 
     .nes-container.project-card {
       margin-bottom: 2rem;
@@ -141,6 +156,11 @@
       .inu {
         opacity: 0.8;
         width: 120px;
+      }
+      .venuspickingmeup {
+        opacity: 0.6;
+        width: 15%;
+        height: 15%;
       }
     }
 
@@ -185,6 +205,9 @@
         left: 12vw;
       }
     }
+    .nes-container {
+      font-size: clamp(0.4rem, 3vw, 1rem);
+    }
   </style>
 </head>
 <body>
@@ -195,21 +218,23 @@
   <img src="./Images/SkeleySharps.png" class="sticker fangs" alt="fangs sticker">
   <img src="./Images/skeleyRave.png" class="sticker rave" alt="rave sticker">
   <img src="./Images/boo.png" class="sticker boo" alt="boo sticker">
+  <img src="./Images/venuspickingmeup.png" class="venuspickingmeup sticker" alt="venus picking me up sticker">
+  <img src="Images/littlestabbyguy.png" class="littlestabbyguy sticker" alt="little penguin with a knife"/>
 
   <div class="main-content">
     <section class="topic">
       <h1 class="nes-text is-warning">
-        <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236);">#Bobateagrl.github.io</a>
+        <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236); font-size: clamp(0.9rem, 3.5vw, 2rem);">#Bobateagrl.github.io</a>
       </h1>
-      <h2 style="color: #ff07ea;">Projects</h2>
-      <p class="nes-text is-primary" style="color: #08ac48">
-        I've worked on a lot of things but this will showcase real active/reachable projects as well as act as a graveyard for a few things that will never see the light of day again but other people knew about</p>
-        <p class="nes-text is-warning">this is not a full list just the biggest ones</p>
+      <h2 style="color: #ff07ea; font-size: clamp(0.8rem, 3.5vw, 1rem);">Projects</h2>
+      <p class="nes-text is-primary" style="color: #08ac48; font-size: clamp(0.6rem, 2.5vw, 1rem);">
+        I've worked on a lot of things but this will showcase real active/reachable projects as well as act as a graveyard for a few things that will never see the light of day again, but other people knew about</p>
+        <p class="nes-text is-warning" style="font-size: clamp(0.7rem, 3vw, 1.3rem);">this is not a full list just the biggest ones</p>
     </section>
 
     <!-- Active Projects Section -->
     <section class="nes-container with-title is-dark">
-      <h3 class="title" style="color: #f31182;">Active Projects</h3>
+      <h3 class="title" style="color: #f31182; font-size: clamp(0.3rem, 3.5vw, 1rem);">Active Projects</h3>
       
       <div class="nes-container project-card">
         <h4 class="nes-text" style="color: #8c2022">This Website</h4>

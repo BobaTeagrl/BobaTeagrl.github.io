@@ -44,62 +44,76 @@
           position: relative;
           z-index: 11; 
         }
-    
+
         .sticker {
-          position: fixed; 
-          pointer-events: none; 
-          z-index: 0; 
-          transition: opacity 0.4s ease; 
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.4s ease;
         }
-    
+
         .chibi {
-          top: 15vh;
-          left: 5vw;
-          width: 75px;
-          height: 75px;
-          transform: rotate(25deg);
+            top: 25vh;
+            left: 5vw;
+            width: 75px;
+            height: 75px;
+            transform: rotate(25deg);
         }
-    
+
         .inu {
-          top: 38vh;
-          right: 2vw;
-          width: 200px;
-          height: auto;
-          transform: rotate(9deg);
+            top: 65vh;
+            right: 2vw;
+            width: 200px;
+            height: auto;
+            transform: rotate(9deg);
         }
-    
+
         .headpats {
-          bottom: 10vh;
-          left: 3vw;
-          width: 125px;
-          height: 125px;
-          transform: rotate(-10deg);
+            bottom: 10vh;
+            left: 3vw;
+            width: 125px;
+            height: 125px;
+            transform: rotate(-10deg);
         }
-    
+
         .fangs {
-          top: 15vh;
-          right: 15vw;
-          width: 125px;
-          height: 125px;
-          transform: rotate(-14deg);
+            top: 12vh;
+            right: 7vw;
+            width: 125px;
+            height: 125px;
+            transform: rotate(-14deg);
         }
-    
+
         .rave {
-          top: 45vh;
-          left: 8vw;
-          width: 125px;
-          height: 125px;
-          transform: rotate(4deg);
+            top: 50vh;
+            left: 8vw;
+            width: 125px;
+            height: 125px;
+            transform: rotate(4deg);
         }
-    
+
         .boo {
-          bottom: 6vh;
-          right: 18vw;
-          width: 80px;
-          height: 80px;
-          transform: rotate(-15deg);
+            top: 85vh;
+            right: 16vw;
+            width: 80px;
+            height: 80px;
+            transform: rotate(-15deg);
         }
-    
+        .venuspickingmeup {
+            bottom: 45vh;
+            right: 10vw;
+            width: 150px;
+            height: 200px;
+            transform: rotate(-15deg);
+        }
+        .littlestabbyguy {
+            bottom: 80vh;
+            left: 8vw;
+            width: 15%;
+            height: 22%;
+            transform: rotate(-15deg);
+        }
+
         /* NES.css custom adjustments */
         .nes-container.project-card {
           margin-bottom: 2rem;
@@ -145,6 +159,11 @@
             opacity: 0.8;
             width: 120px;
           }
+            .venuspickingmeup {
+                opacity: 0.6;
+                width: 15%;
+                height: 15%;
+            }
         }
     
         @media screen and (max-width: 1200px) {
@@ -178,6 +197,9 @@
             left: 12vw;
           }
         }
+        .nes-balloon {
+            width: clamp(1rem, 60vw, 30rem); font-size: clamp(0.4rem, 1.4vw, 1rem);
+        }
       </style>
 </head>
 
@@ -189,15 +211,16 @@
     <img src="./Images/SkeleySharps.png" class="sticker fangs" alt="fangs sticker">
     <img src="./Images/skeleyRave.png" class="sticker rave" alt="rave sticker">
     <img src="./Images/boo.png" class="sticker boo" alt="boo sticker">
+    <img src="./Images/venuspickingmeup.png" class="venuspickingmeup sticker" alt="venus picking me up sticker">
+    <img src="Images/littlestabbyguy.png" class="littlestabbyguy sticker" alt="little penguin with a knife"/>
 
     <div class="main-content">
         
         <section class="topic">
             <h1 class="nes-text is-warning">
-                <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236);">#Bobateagrl.github.io</a>
+                <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236); font-size: clamp(0.9rem, 3.5vw, 2rem);">#Bobateagrl.github.io</a>
             </h1>
-            <h2 style="color: #d10a64;">About Me</h2>
-            <p class="nes-text is-primary">
+            <p class="nes-text is-primary" style="font-size: clamp(0.8rem, 3.5vw, 1rem);">
                 Pronouns: She/Her
             </p>
         </section>
@@ -206,10 +229,10 @@
         <section class="nes-container with-title is-dark">
             <h3 class="title" style="color: #f31182;">About Me</h3>
             
-            <div class="nes-container project-card">
+            <div class="nes-container project-card" style="font-size: clamp(0.4rem, 3.5vw, 1rem);">
                 <h4 style="color: aqua;">Hi im Boba! im a (mtf) trans developer and professional mom fucker :p</h4>
                 <p style="color: rgb(31, 238, 203);">im known for a few things but my main skills are cybersecurity, game development and being annoying :3</p>
-                <p style="color: aquamarine;">I dont really use matrix or the fediverse so if you really need me to SEE your msg, not the best choice. you have the same chance of me actually responding on all platforms tho</p>
+                <p style="color: aquamarine;">I don't really use matrix or the fediverse so if you really need me to SEE your msg, not the best choice. you have the same chance of me actually responding on all platforms tho</p>
             </div>
         </section>
     </div>
@@ -220,13 +243,13 @@
 <script src="javascript/interactive-background.js"></script>
    
 </body>
- <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10;">
+ <footer style="margin-top: 3rem; text-align: center; position: relative; z-index: 10; font-size: clamp(0.5rem, 3.5vw, 1rem);">
        
         <div CLASS="nes-balloon from-left is-dark">
           <p style="color: #f007dc;">Matrix - @bobateagrl:matrix.org</p>
         </div>
         <div class="nes-balloon from-right is-dark">
-          <p style="color: #da04c8;">Fediverse - @bobateagrl@transgirl.cafe</p>
+          <p style="color: #da04c8; ">Fediverse - @bobateagrl@transgirl.cafe</p>
         </div>
         <br>
 
