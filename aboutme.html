@@ -200,6 +200,48 @@
         .nes-balloon {
             width: clamp(1rem, 60vw, 30rem); font-size: clamp(0.4rem, 1.4vw, 1rem);
         }
+
+        .site-nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1.25rem;
+        }
+
+        .site-nav-list a {
+            font-family: var(--font-pixel);
+            font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .site-nav-list a:hover,
+        .site-nav-list a:focus-visible {
+            color: var(--purple);
+            text-decoration: underline;
+        }
+
+        .site-nav-list a[aria-current="page"] {
+            color: var(--pink);
+            text-decoration: underline;
+        }
+
+        :root {
+            --bg: #1a1d20;
+            --surface: #212529;
+            --surface-alt: #2a2d31;
+            --pink: #ec55ec;
+            --purple: #6f42c1;
+            --magenta: #f31182;
+            --green: #92cc41;
+            --yellow: #ffc107;
+            --cyan: #00c8ff;
+            --muted: #6c757d;
+            --text: #e0e0e0;
+            --text-dim: #9aa0a6;
+        }
       </style>
 </head>
 
@@ -220,6 +262,15 @@
             <h1 class="nes-text is-warning">
                 <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236); font-size: clamp(0.9rem, 3.5vw, 2rem);">#Bobateagrl.github.io</a>
             </h1>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav-list">
+                    <li><a href="index.html">#home</a></li>
+                    <li><a href="projects.html" >#projects</a></li>
+                    <li><a href="aboutme.html" aria-current="page">#about</a></li>
+                    <li><a href="LightCaptureTerminal.html">#photos</a></li>
+                    <li><a href="posts/" >#writing</a></li>
+                </ul>
+            </nav>
             <p class="nes-text is-primary" style="font-size: clamp(0.8rem, 3.5vw, 1rem);">
                 Pronouns: She/Her
             </p>

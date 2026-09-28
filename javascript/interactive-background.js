@@ -107,7 +107,7 @@ const CODE_SEQUENCES = {
         keys: [79, 82, 65, 78, 71, 69,], //O R A N G E
         action: () => {
             GRID_COLOR = [255, 163, 0]
-            showHint("Orange grid activated!" , "#ffa300")
+            showHint("Orange grid activated!", "#ffa300")
         },
         description: "Type ORANGE - Orange grid color"
     },
@@ -123,7 +123,7 @@ const CODE_SEQUENCES = {
     whenexist: {
         keys: [87, 72, 69, 78, 69, 88, 73, 83, 84], // W H E N E X I S T
         action: () => {
-            flashImage('./Images/whenexist.jpg', 3000);
+            flashImage((window.SITE_ROOT || '.') + '/Images/whenexist.jpg', 3000);
             showHint("me when", "#c300ff");
         },
         description: "Type WHENEXIST - show a meme"
@@ -131,7 +131,7 @@ const CODE_SEQUENCES = {
     gock: {
         keys: [71, 79, 67, 75], // G O C K
         action: () => {
-            flashImage('./Images/gock.jpg', 3000);
+            flashImage((window.SITE_ROOT || '.') + '/Images/gock.jpg', 3000);
             showHint("Hmmmm yummy", "#0ed594");
         },
         description: "Type gock - show a meme"
@@ -139,7 +139,7 @@ const CODE_SEQUENCES = {
     mom: {
         keys: [77, 79, 77], // M O M
         action: () => {
-            flashImage('./Images/mom.jpg', 3000);
+            flashImage((window.SITE_ROOT || '.') + '/Images/mom.jpg', 3000);
             showHint("REALLY? IN FRONT OF YOUR MOM??", "#d50e85");
         },
         description: "Type mom - show a meme"
@@ -147,10 +147,26 @@ const CODE_SEQUENCES = {
     kms: {
         keys: [84, 73, 77, 69, 84, 79], // T I M E T O
         action: () => {
-            flashImage('./Images/kms.webp', 3000);
+            flashImage((window.SITE_ROOT || '.') + '/Images/kms.webp', 3000);
             showHint("ITS TIME TO KMS", "#0d3570");
         },
         description: "Type timeto - show a meme"
+    },
+    cuckchair: {
+        keys: [67, 85, 67, 75, 67, 72, 65, 73, 82], // C U C K C H A I R
+        action: () => {
+            flashImage((window.SITE_ROOT || '.') + '/Images/cuckchair.jpg', 3000);
+            showHint("I wanna watch :3", "#5fdd0a");
+        },
+        description: "Type cuckchair - show a meme"
+    },
+    mybread: {
+        keys: [77, 89, 66, 82, 69, 65, 68], // M Y B R E A D
+        action: () => {
+            flashImage((window.SITE_ROOT || '.') + '/Images/mybread.jpg', 3000);
+            showHint("She eateds ze bred", "#8811cc");
+        },
+        description: "Type mybread - show a meme"
     },
 };
 
@@ -161,7 +177,7 @@ Object.keys(CODE_SEQUENCES).forEach(key => {
 });
 
 function preload() {
-    img = loadImage("./Images/dic.png",
+    img = loadImage((window.SITE_ROOT || '.') + "/Images/dic.png",
         () => console.log("Easter egg image loaded!"),
         () => console.error("Easter egg image failed to load")
     );
@@ -251,12 +267,12 @@ function getRandomNeighbors(row, col) {
     return neighbors;
 }
 
-function windowResized() {
+/*function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     numRows = Math.ceil(windowHeight / CELL_SIZE);
     numCols = Math.ceil(windowWidth / CELL_SIZE);
     background(BACKGROUND_COLOR);
-}
+}*/
 
 // Helper function to show hints
 function showHint(message, color) {
@@ -305,7 +321,7 @@ function flashImage(src, duration = 600) {
 }
 
 // Code detection system
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
     const modal = document.getElementById('photoModal');
     if (modal && modal.style.display === 'flex') return;
 

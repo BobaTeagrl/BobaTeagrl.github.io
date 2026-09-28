@@ -208,6 +208,48 @@
     .nes-container {
       font-size: clamp(0.4rem, 3vw, 1rem);
     }
+
+    .site-nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+    }
+
+    .site-nav-list a {
+      font-family: var(--font-pixel);
+      font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    .site-nav-list a:hover,
+    .site-nav-list a:focus-visible {
+      color: var(--purple);
+      text-decoration: underline;
+    }
+
+    .site-nav-list a[aria-current="page"] {
+      color: var(--pink);
+      text-decoration: underline;
+    }
+
+    :root {
+      --bg: #1a1d20;
+      --surface: #212529;
+      --surface-alt: #2a2d31;
+      --pink: #ec55ec;
+      --purple: #6f42c1;
+      --magenta: #f31182;
+      --green: #92cc41;
+      --yellow: #ffc107;
+      --cyan: #00c8ff;
+      --muted: #6c757d;
+      --text: #e0e0e0;
+      --text-dim: #9aa0a6;
+    }
   </style>
 </head>
 <body>
@@ -226,7 +268,20 @@
       <h1 class="nes-text is-warning">
         <a href="./index.html" class="nes-text site-title" style="color: rgb(236, 85, 236); font-size: clamp(0.9rem, 3.5vw, 2rem);">#Bobateagrl.github.io</a>
       </h1>
+
+      <nav aria-label="Site navigation">
+        <ul class="site-nav-list">
+          <li><a href="index.html">#home</a></li>
+          <li><a href="projects.html" aria-current="page">#projects</a></li>
+          <li><a href="aboutme.html">#about</a></li>
+          <li><a href="LightCaptureTerminal.html">#photos</a></li>
+          <li><a href="posts/" >#writing</a></li>
+        </ul>
+      </nav>
+
+    <P></P>
       <h2 style="color: #ff07ea; font-size: clamp(0.8rem, 3.5vw, 1rem);">Projects</h2>
+      <P></P>
       <p class="nes-text is-primary" style="color: #08ac48; font-size: clamp(0.6rem, 2.5vw, 1rem);">
         I've worked on a lot of things but this will showcase real active/reachable projects as well as act as a graveyard for a few things that will never see the light of day again, but other people knew about</p>
         <p class="nes-text is-warning" style="font-size: clamp(0.7rem, 3vw, 1.3rem);">this is not a full list just the biggest ones</p>

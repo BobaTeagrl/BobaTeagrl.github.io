@@ -598,6 +598,55 @@
                left: 12vw;
            }
        }
+
+       .site-nav-list {
+           list-style: none;
+           margin: 0;
+           padding: 0;
+           display: flex;
+           flex-wrap: wrap;
+           gap: 0.25rem 1.25rem;
+       }
+
+       .site-nav-list a {
+           font-family: var(--font-pixel);
+           font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+           color: var(--green);
+           text-decoration: none;
+       }
+
+       .site-nav-list a:hover,
+       .site-nav-list a:focus-visible {
+           color: var(--purple);
+           text-decoration: underline;
+       }
+
+       .site-nav-list a[aria-current="page"] {
+           color: var(--pink);
+           text-decoration: underline;
+       }
+
+       :root {
+           --bg: #1a1d20;
+           --surface: #212529;
+           --surface-alt: #2a2d31;
+           --pink: #ec55ec;
+           --purple: #6f42c1;
+           --magenta: #f31182;
+           --green: #92cc41;
+           --yellow: #ffc107;
+           --cyan: #00c8ff;
+           --muted: #6c757d;
+           --text: #e0e0e0;
+           --text-dim: #9aa0a6;
+
+           --font-pixel:   'Press Start 2P', monospace;
+           --font-mono:    'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+
+           /* Reading comfort */
+           --prose-width:  65ch;
+           --line-height:  1.75;
+       }
     </style>
 </head>
 
@@ -617,6 +666,16 @@
             <h1 class="nes-text is-warning">
                 <a href="./index.html" class="site-title-terminal">#Bobateagrl.github.io</a>
             </h1>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav-list">
+                    <li><a href="index.html">#home</a></li>
+                    <li><a href="projects.html">#projects</a></li>
+                    <li><a href="aboutme.html">#about</a></li>
+                    <li><a href="LightCaptureTerminal.html" aria-current="page">#photos</a></li>
+                    <li><a href="posts/" >#writing</a></li>
+                </ul>
+            </nav>
+
             <h2 class="page-title">LIGHT_CAPTURE_TERMINAL.exe</h2>
         </section>
 
