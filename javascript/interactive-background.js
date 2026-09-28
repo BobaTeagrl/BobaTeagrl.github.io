@@ -1,6 +1,6 @@
 let CELL_SIZE = 15;
 const BACKGROUND_COLOR = '#1a1d20';
-let GRID_COLOR = [0, 200, 255]; // cyanish
+let GRID_COLOR = [195, 0, 255]; // purple
 
 let useImages = false;
 let numRows, numCols;
